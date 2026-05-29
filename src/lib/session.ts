@@ -1,11 +1,20 @@
 import 'server-only'; // Verhindert, dass dieser Code je im Browser landet
 import { cookies } from 'next/headers';
-import { SignJWT, jwtVerify } from 'jose';
+import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
 import { redirect } from 'next/navigation';
 
 const SECRET = new TextEncoder().encode(process.env.SESSION_SECRET);
 
-export async function encrypt(payload: any) {
+interface ExtendedPayload extends JWTPayload {
+  username: string;
+  userId: number;
+}
+
+export async function encrypt(payload: {
+  userId: number;
+  username: string;
+  expiresAt: Date;
+}) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
@@ -15,19 +24,19 @@ export async function encrypt(payload: any) {
 
 export async function decrypt(token: string | undefined = '') {
   try {
-    const { payload } = await jwtVerify(token, SECRET, {
+    const { payload } = await jwtVerify<ExtendedPayload>(token, SECRET, {
       algorithms: ['HS256'],
     });
-    return payload; // Gibt die User-Daten zurück, wenn die Signatur stimmt
+    return payload;
   } catch (error) {
     console.log('Token-Prüfung fehlgeschlagen (abgelaufen oder manipuliert)');
     return null;
   }
 }
 
-export async function createSession(userId: string) {
+export async function createSession(userId: number, username: string) {
   const expiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000);
-  const token = await encrypt({ userId, expiresAt });
+  const token = await encrypt({ userId, username, expiresAt });
 
   const cookieStore = await cookies();
   cookieStore.set('session_token', token, {
@@ -39,7 +48,6 @@ export async function createSession(userId: string) {
   });
 }
 
-// 2. Die zentrale Prüf-Funktion (Data Access Layer / DAL)
 export async function verifySession() {
   const cookieStore = await cookies();
 
@@ -51,7 +59,11 @@ export async function verifySession() {
     redirect('/login');
   }
 
-  return { isAuth: true, username: session.username, userId: session.userId };
+  return {
+    isAuth: true,
+    username: session.username,
+    userId: session.userId,
+  };
 }
 
 export async function deleteSession() {
