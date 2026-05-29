@@ -11,7 +11,13 @@ async function main() {
     passwordHash: hashedPassword,
   };
 
+  const userSelly: typeof usersTable.$inferInsert = {
+    name: 'Selly',
+    passwordHash: hashedPassword,
+  };
+
   await db.insert(usersTable).values(user);
+  await db.insert(usersTable).values(userSelly);
   console.log('New user created!');
 }
 
