@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres_dev:
+    image: postgres:15-alpine
+    container_name: crud_db_dev
+    environment:
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: dev_db
+    ports:
+      - '5432:5432' # Maps port 5432 from Docker straight to your machine
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data
+  db_tool:
+    image: adminer:latest
+    container_name: crud_db_tool
+    restart: always
+    ports:
+      - '8080:8080' # Accessible at http://localhost:8080
+    depends_on:
+      - postgres_dev
+
+volumes:
+  pgdata_dev:
