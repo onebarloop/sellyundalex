@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   outputFileTracingIncludes: {
     '/*': [
-      './drizzle/**/*', // WICHTIG: Damit die .sql-Dateien im Container landen
+      './drizzle/**/*', // Deine SQL-Migrationen
     ],
   },
 };

@@ -14,16 +14,20 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-# 2. Quellcode bauen
+# 2. Quellcode bauen & Skript bündeln
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Wir legen die Datei hier sicher im "dist"-Ordner ab
-RUN npx tsc src/db/run-init.ts --target es2022 --moduleResolution node --module commonjs --skipLibCheck --esModuleInterop --outDir dist
+# =========================================================================
+# DER TRICK: Wir nutzen "esbuild" (wird von Next.js mitgeliefert) oder npx,
+# um dein run-init.ts und ALLE seine Abhängigkeiten (drizzle, pg, bcrypt)
+# in eine EINZIGE, autarke JavaScript-Datei zu kompilieren.
+# =========================================================================
+RUN npx esbuild src/db/run-init.ts --bundle --platform=node --target=node20 --outfile=dist/run-init.js
 
-# Next.js sammelt anonyme Telemetriedaten während des Builds (optional deaktivieren)
+# Next.js sammelt anonyme Telemetriedaten während des Builds
 ENV NEXT_TELEMETRY_DISABLED=0
 
 RUN \
@@ -51,7 +55,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # =========================================================================
-# KORREKTUR: Wir kopieren die Datei aus dem sicheren "dist"-Ordner nach ./
+# Kopiere das fertige Bundle. Diese Datei hat KEINE Abhängigkeiten mehr!
 # =========================================================================
 COPY --from=builder --chown=nextjs:nodejs /app/dist/run-init.js ./run-init.js
 
@@ -62,5 +66,5 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Führt erst dein fehlerfreies JS-Skript aus, dann den Webserver
+# Führt erst dein gebündeltes Skript aus, dann den Webserver
 CMD ["sh", "-c", "node run-init.js && node server.js"]
