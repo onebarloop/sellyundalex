@@ -20,7 +20,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN npx tsc src/db/run-init.ts --target es2022 --moduleResolution node --module commonjs --outDir .next/standalone/scripts
+RUN npx tsc src/db/run-init.ts --target es2022 --moduleResolution node --module commonjs --skipLibCheck --esModuleInterop --outDir .next/standalone/scripts
 
 # Next.js sammelt anonyme Telemetriedaten während des Builds (optional deaktivieren)
 ENV NEXT_TELEMETRY_DISABLED=0
