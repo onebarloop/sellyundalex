@@ -4,8 +4,7 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   outputFileTracingIncludes: {
     '/*': [
-      './drizzle.config.ts', // Die Drizzle-Konfigurationsdatei
-      './src/**/*', // Der komplette Quellcode inkl. Auth, Schema und Seed
+      './drizzle/**/*', // WICHTIG: Damit die .sql-Dateien im Container landen
     ],
   },
 };

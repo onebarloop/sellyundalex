@@ -20,6 +20,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+RUN npx tsc src/db/run-init.ts --target es2022 --moduleResolution node --module commonjs --outDir .next/standalone/scripts
+
 # Next.js sammelt anonyme Telemetriedaten während des Builds (optional deaktivieren)
 ENV NEXT_TELEMETRY_DISABLED=0
 
@@ -47,6 +49,8 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone/scripts/run-init.js ./run-init.js
+
 
 USER nextjs
 
@@ -56,4 +60,4 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 # ==========================================
-CMD ["sh", "-c", "npx drizzle-kit migrate --config=drizzle.config.ts && npx tsx src/db/seed.ts && node server.js"]
+CMD ["sh", "-c", "node run-init.js && node server.js"]
