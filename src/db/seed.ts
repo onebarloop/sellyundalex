@@ -22,11 +22,11 @@ async function main() {
     passwordHash: hashedPassword,
   };
 
-  // .onConflictDoNothing() verhindert Abstürze bei Container-Neustarts
+  // .onConflictDoNothing() verhindert Crashs bei wiederholten Starts
   await db.insert(usersTable).values(user).onConflictDoNothing();
   await db.insert(usersTable).values(userSelly).onConflictDoNothing();
 
-  console.log('🌱 Seeding abgeschlossen (oder Benutzer existierten bereits)!');
+  console.log('🌱 Seeding abgeschlossen!');
 }
 
 main().catch((err) => {
