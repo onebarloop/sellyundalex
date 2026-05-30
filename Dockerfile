@@ -20,6 +20,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Wir legen die Datei hier sicher im "dist"-Ordner ab
 RUN npx tsc src/db/run-init.ts --target es2022 --moduleResolution node --module commonjs --skipLibCheck --esModuleInterop --outDir dist
 
 # Next.js sammelt anonyme Telemetriedaten während des Builds (optional deaktivieren)
@@ -49,8 +50,10 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone/scripts/run-init.js ./run-init.js
-
+# =========================================================================
+# KORREKTUR: Wir kopieren die Datei aus dem sicheren "dist"-Ordner nach ./
+# =========================================================================
+COPY --from=builder --chown=nextjs:nodejs /app/dist/run-init.js ./run-init.js
 
 USER nextjs
 
@@ -59,5 +62,5 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# ==========================================
+# Führt erst dein fehlerfreies JS-Skript aus, dann den Webserver
 CMD ["sh", "-c", "node run-init.js && node server.js"]
