@@ -3,7 +3,7 @@ import { usersTable } from './schema';
 import * as bcrypt from 'bcryptjs';
 
 async function main() {
-  const passwordPlain = 'mySecretPassword123';
+  const passwordPlain = process.env.USER_PW!;
   const hashedPassword = await bcrypt.hash(passwordPlain, 12);
 
   const user: typeof usersTable.$inferInsert = {
