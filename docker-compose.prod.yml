@@ -13,6 +13,7 @@ services:
       - NODE_ENV=production
       # DATABASE_URL nutzt den Containernamen 'postgres_prod' als Host
       - DATABASE_URL=postgresql://${PROD_DB_USER}:${PROD_DB_PASSWORD}@postgres_prod:5432/${PROD_DB_NAME}
+      - USER_PW
     depends_on:
       - postgres_prod
 
