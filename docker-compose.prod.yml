@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  next_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: next_live_app
+    restart: always
+    ports:
+      - '127.0.0.1:3000:3000' # Nur lokal auf der VM erreichbar (für Apache)
+    environment:
+      - NODE_ENV=production
+      # DATABASE_URL nutzt den Containernamen 'postgres_prod' als Host
+      - DATABASE_URL=postgresql://${PROD_DB_USER}:${PROD_DB_PASSWORD}@postgres_prod:5432/${PROD_DB_NAME}
+    depends_on:
+      - postgres_prod
+
+  postgres_prod:
+    image: postgres:15-alpine
+    container_name: postgres_live_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${PROD_DB_USER}
+      POSTGRES_PASSWORD: ${PROD_DB_PASSWORD}
+      POSTGRES_DB: ${PROD_DB_NAME}
+    volumes:
+      - pgdata_prod:/var/lib/postgresql/data
+
+volumes:
+  pgdata_prod:
