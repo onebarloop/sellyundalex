@@ -56,4 +56,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["sh", "-c", "npx drizzle-kit migrate --dialect=postgresql --url=$DATABASE_URL --out=./drizzle && npx tsx src/db/seed.ts && node server.js"]
+CMD ["sh", "-c", "npx drizzle-kit migrate && npx tsx src/db/seed.ts && node server.js"]
