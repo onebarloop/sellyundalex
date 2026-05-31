@@ -19,7 +19,7 @@ export async function login(
     }
 
     // 1. User aus Drizzle holen
-    const user = await db.query.usersTable.findFirst({
+    const user = await db.query.users.findFirst({
       where: (users, { eq }) => eq(users.name, username),
     });
 
