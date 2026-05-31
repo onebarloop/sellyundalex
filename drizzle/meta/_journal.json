@@ -15,6 +15,13 @@
       "when": 1780126421003,
       "tag": "0001_fine_spiral",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1780224322590,
+      "tag": "0002_gorgeous_true_believers",
+      "breakpoints": true
     }
   ]
 }

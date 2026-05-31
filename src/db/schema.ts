@@ -6,3 +6,9 @@ export const usersTable = pgTable('users', {
   passwordHash: varchar('password_hash', { length: 255 }).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
+
+export const spendingsTable = pgTable('spendings', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  title: varchar({ length: 255 }).notNull().unique(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
