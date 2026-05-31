@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:seed": "npx tsx --env-file=.env.local  src/db/seed.ts"
+    "db:seed": "node run-init.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
