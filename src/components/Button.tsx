@@ -1,11 +1,10 @@
 'use client';
 
-import type { PropsWithChildren } from 'react';
-
-interface Props extends PropsWithChildren {
+type Props = {
+  children: React.ReactNode;
   action: () => void;
-}
+};
 
-export default function Button({ action, children }: Props) {
+export default function Button({ children, action }: Props) {
   return <button onClick={action}>{children}</button>;
 }
