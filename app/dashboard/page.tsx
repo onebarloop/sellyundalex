@@ -1,11 +1,20 @@
 import Button from '@/src/components/Button';
 import { verifySession } from '../../src/lib/session';
 import { logout } from '@/src/actions/auth';
+import { add } from '@/src/actions/spendings';
+import { db } from '@/src/db/db';
+import Spending from './components/Spending';
 
 export default async function DashboardPage() {
-  const session = await verifySession();
+  const { userId, username } = await verifySession();
 
-  console.log(session);
+  const result = await db.query.spendings.findMany({
+    where: {
+      spenderId: userId,
+    },
+  });
+
+  console.log(result);
 
   return (
     <div style={{ padding: '20px' }}>
@@ -14,9 +23,19 @@ export default async function DashboardPage() {
       <p>
         Wenn du das sehen kannst, war dein Passwort-Hash-Vergleich erfolgreich!
       </p>
-      <p>Hallo {session.username}</p>
+      <p>Hallo {username}</p>
 
-      <Button action={logout}>Logout</Button>
+      <ul>
+        {result.map((s) => (
+          <Spending spending={s} key={s.id} />
+        ))}
+      </ul>
+
+      <div className="flex flex-col gap-4">
+        <Button action={add}>Add</Button>
+
+        <Button action={logout}>Logout</Button>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "spendings" DROP CONSTRAINT "spendings_title_unique";

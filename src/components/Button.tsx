@@ -6,5 +6,5 @@ type Props = {
 };
 
 export default function Button({ children, action }: Props) {
-  return <button onClick={action}>{children}</button>;
+  return <button onClick={async () => await action()}>{children}</button>;
 }

@@ -1,6 +1,5 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
-import pg from 'pg';
 import * as bcrypt from 'bcryptjs';
 import { users } from './schema'; // Passe den Pfad zu deinem Schema an
 
@@ -14,10 +13,9 @@ async function run() {
     return;
   }
 
-  const pool = new pg.Pool({
-    connectionString: process.env.DATABASE_URL,
+  const db = drizzle({
+    connection: process.env.DATABASE_URL!,
   });
-  const db = drizzle(pool);
 
   try {
     if (shouldMigrate) {
@@ -47,7 +45,7 @@ async function run() {
     console.error('❌ Error:', error);
     process.exit(1);
   } finally {
-    await pool.end();
+    await db.$client.end();
   }
 }
 

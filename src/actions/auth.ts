@@ -20,7 +20,9 @@ export async function login(
 
     // 1. User aus Drizzle holen
     const user = await db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.name, username),
+      where: {
+        name: username,
+      },
     });
 
     // 2. Credentials validieren (Aus Sicherheitsgründen gleiche Fehlermeldung)
