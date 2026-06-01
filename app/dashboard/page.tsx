@@ -6,29 +6,19 @@ import { db } from '@/src/db/db';
 import Spendings from './components/Spendings';
 
 export default async function DashboardPage() {
-  const { userId, username } = await verifySession();
+  const { username } = await verifySession();
 
   const spendings = await db.query.spendings.findMany({
-    where: {
-      spenderId: userId,
+    with: {
+      spender: true,
     },
   });
+  console.log(spendings);
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>🔒 Dashboard (Geschützter Bereich)</h1>
-
-      <p>
-        Wenn du das sehen kannst, war dein Passwort-Hash-Vergleich erfolgreich!
-      </p>
+    <div>
       <p>Hallo {username}</p>
-
+      <h1>Spendings</h1>
       <Spendings spendings={spendings} />
-
-      <div className="flex flex-col gap-4">
-        <Button action={add}>Add</Button>
-
-        <Button action={logout}>Logout</Button>
-      </div>
     </div>
   );
 }

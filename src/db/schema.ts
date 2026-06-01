@@ -26,3 +26,4 @@ export const relations = defineRelations({ users, spendings }, (r) => ({
 }));
 
 export type Spending = typeof spendings.$inferSelect;
+export type User = typeof users.$inferSelect;

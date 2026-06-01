@@ -6,17 +6,20 @@ import { verifySession } from '../lib/session';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
-export async function add() {
+export async function add(formData: FormData) {
   const { userId } = await verifySession();
 
-  const string = 'Test Ausgabe';
+  console.log(formData.get('amount'));
+
+  const spending = formData.get('spending');
+  const amount = formData.get('amount');
 
   await db.insert(spendings).values({
-    title: string,
-    amount: 12,
+    title: String(spending),
+    amount: Number(amount),
     spenderId: userId,
   });
-  // revalidatePath('/');
+  revalidatePath('/');
 }
 
 export async function remove(spending: Spending) {
@@ -24,5 +27,5 @@ export async function remove(spending: Spending) {
   if (userId === spending.spenderId) {
     await db.delete(spendings).where(eq(spendings.id, spending.id));
   }
-  // revalidatePath('/');
+  revalidatePath('/');
 }
