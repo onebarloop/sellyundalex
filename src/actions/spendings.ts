@@ -16,7 +16,7 @@ export async function add() {
     amount: 12,
     spenderId: userId,
   });
-  revalidatePath('/');
+  // revalidatePath('/');
 }
 
 export async function remove(spending: Spending) {
@@ -24,5 +24,5 @@ export async function remove(spending: Spending) {
   if (userId === spending.spenderId) {
     await db.delete(spendings).where(eq(spendings.id, spending.id));
   }
-  revalidatePath('/');
+  // revalidatePath('/');
 }
