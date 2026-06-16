@@ -25,8 +25,8 @@ export default function Spendings({ spendings }: Props) {
             <span>{spending.title}</span>
             <span>{spending.amount}</span>
             <span>{spending.spender?.name}</span>
-            <span>{spending.createdAt.toLocaleDateString()}</span>
-            <span>{spending.createdAt.toLocaleTimeString()}</span>
+            {/* <span>{spending.createdAt.toLocaleDateString()}</span>
+            <span>{spending.createdAt.toLocaleTimeString()}</span> */}
             <button onClick={async () => await remove(spending)}>Remove</button>
           </motion.li>
         ))}

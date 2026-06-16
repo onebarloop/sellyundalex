@@ -1,7 +1,4 @@
-import Button from '@/src/components/Button';
 import { verifySession } from '../../src/lib/session';
-import { logout } from '@/src/actions/auth';
-import { add } from '@/src/actions/spendings';
 import { db } from '@/src/db/db';
 import Spendings from './components/Spendings';
 
@@ -13,7 +10,6 @@ export default async function DashboardPage() {
       spender: true,
     },
   });
-  console.log(spendings);
   return (
     <div>
       <p>Hallo {username}</p>

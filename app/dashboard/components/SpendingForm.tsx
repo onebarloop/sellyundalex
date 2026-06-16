@@ -8,14 +8,14 @@ export default function SpendingForm() {
         type="text"
         id="spending"
         name="spending"
-        className="bg-amber-100"
+        className="bg-amber-100 text-black"
       />
       <input
         placeholder="Betrag"
         type="number"
         id="amount"
         name="amount"
-        className="bg-amber-100"
+        className="bg-amber-100 text-black"
       />
       <button className="">Add</button>
     </form>
