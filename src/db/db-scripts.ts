@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import * as bcrypt from 'bcryptjs';
-import { users } from './src/db/schema.ts';
+import { users } from './schema'; // Passe den Pfad zu deinem Schema an
 
 async function run() {
   const args = process.argv.slice(2);

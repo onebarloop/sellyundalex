@@ -2,14 +2,12 @@
   "name": "sellyundalex",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:seed": "node run-init.js",
-    "build:prod": "docker compose -f docker-compose.prod.yml up -d --build --force-recreate"
+    "db:seed": "node run-init.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
