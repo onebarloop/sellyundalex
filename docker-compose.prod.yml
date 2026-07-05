@@ -8,14 +8,16 @@ services:
     container_name: next_live_app
     restart: always
     ports:
-      - '127.0.0.1:3000:3000' # Nur lokal auf der VM erreichbar (für Apache)
+      - '127.0.0.1:3000:3000'
     environment:
       - NODE_ENV=production
-      # DATABASE_URL nutzt den Containernamen 'postgres_prod' als Host
       - DATABASE_URL=postgresql://${PROD_DB_USER}:${PROD_DB_PASSWORD}@postgres_prod:5432/${PROD_DB_NAME}
       - USER_PW
     depends_on:
-      - postgres_prod
+      postgres_prod:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
 
   postgres_prod:
     image: postgres:15-alpine
@@ -25,8 +27,26 @@ services:
       POSTGRES_USER: ${PROD_DB_USER}
       POSTGRES_PASSWORD: ${PROD_DB_PASSWORD}
       POSTGRES_DB: ${PROD_DB_NAME}
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      interval: 5s
+      timeout: 5s
+      retries: 10
     volumes:
       - pgdata_prod:/var/lib/postgresql/data
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ['node', 'db-scripts.js', '--migrate']
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${PROD_DB_USER}:${PROD_DB_PASSWORD}@postgres_prod:5432/${PROD_DB_NAME}
+      - USER_PW
+    depends_on:
+      postgres_prod:
+        condition: service_healthy
 
 volumes:
   pgdata_prod:

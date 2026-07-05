@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "start:prod": "docker compose -f docker-compose.prod.yml up -d --build --force-recreate",
-    "seed:prod": "docker exec -it next_live_app node db-scripts.js --seed",
-    "migrate:prod": "docker exec -it next_live_app node db-scripts.js --migrate"
+    "seed:prod": "node db-scripts.js --seed",
+    "migrate:prod": "node db-scripts.js --migrate"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
