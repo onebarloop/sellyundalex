@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: sellundalex-app
     container_name: next_live_app
     restart: always
     ports:
@@ -36,10 +37,8 @@ services:
       - pgdata_prod:/var/lib/postgresql/data
 
   migrate:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: ['node', 'db-scripts.js', '--migrate']
+    image: sellundalex-app
+    command: ['node', 'db-scripts.js', '--migrate', '--seed']
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgresql://${PROD_DB_USER}:${PROD_DB_PASSWORD}@postgres_prod:5432/${PROD_DB_NAME}
