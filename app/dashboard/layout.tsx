@@ -11,7 +11,7 @@ export default function Layout({
     <>
       {children}
       <SpendingForm />
-      <div>
+      <div className="mt-4">
         <Button action={logout}>Logout</Button>
       </div>
     </>

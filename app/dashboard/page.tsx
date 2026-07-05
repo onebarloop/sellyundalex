@@ -12,8 +12,8 @@ export default async function DashboardPage() {
   });
   return (
     <div>
-      <p>Hallo {username}</p>
-      <h1>Spendings</h1>
+      <p className="text-sm text-foreground/50">Hallo {username}</p>
+      <h1 className="text-2xl font-bold mb-2">Spendings</h1>
       <Spendings spendings={spendings} />
     </div>
   );

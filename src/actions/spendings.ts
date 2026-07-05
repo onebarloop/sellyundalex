@@ -9,8 +9,6 @@ import { revalidatePath } from 'next/cache';
 export async function add(formData: FormData) {
   const { userId } = await verifySession();
 
-  console.log(formData.get('amount'));
-
   const spending = formData.get('spending');
   const amount = formData.get('amount');
 

@@ -12,11 +12,11 @@ type Props = {
 
 export default function Spendings({ spendings }: Props) {
   return (
-    <ul>
+    <ul className="mb-2">
       <AnimatePresence initial={false}>
         {spendings.map((spending) => (
           <motion.li
-            className="p-2 border-2 flex gap-2"
+            className="p-2 border-2 flex gap-2 flex-wrap"
             key={spending.id}
             exit={{ opacity: 0, scale: 0 }}
             initial={{ opacity: 0, scale: 0 }}

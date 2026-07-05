@@ -2,25 +2,25 @@
 
 import { useActionState } from 'react';
 import { login } from '@/src/actions/auth';
+import Input from '@/src/components/Input';
 
 export default function LoginPage() {
-  // state enthält den Rückgabewert der Server Action (z.B. Fehler-Nachrichten)
   const [state, formAction, isPending] = useActionState(login, undefined);
 
   return (
     <div>
       <form action={formAction}>
-        <h2>Anmelden</h2>
+        <h1 className="text-2xl font-bold mb-2">Anmelden</h1>
 
-        {state?.error && <p>{state.error}</p>}
+        <div className="flex gap-2 flex-wrap">
+          {state?.error && <p>{state.error}</p>}
+          <Input id="username" />
+          <Input id="password" type="password" />
 
-        <input type="text" name="username" />
-
-        <input type="password" name="password" placeholder="Passwort" />
-
-        <button type="submit" disabled={isPending}>
-          {isPending ? 'Wird geladen...' : 'Einloggen'}
-        </button>
+          <button type="submit" disabled={isPending}>
+            {isPending ? 'Wird geladen...' : 'Einloggen'}
+          </button>
+        </div>
       </form>
     </div>
   );
