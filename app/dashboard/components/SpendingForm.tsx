@@ -5,7 +5,7 @@ export default function SpendingForm() {
   return (
     <form action={add} className="flex gap-2 flex-wrap">
       <Input placeholder="name" id="spending" />
-      <Input placeholder="amount" type="number" id="amount" />
+      <Input placeholder="amount" type="number" step="0.01" id="amount" />
       <button type="submit">Add</button>
     </form>
   );

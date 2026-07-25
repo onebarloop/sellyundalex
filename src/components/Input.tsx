@@ -3,6 +3,7 @@ type InputProps = {
   name?: string;
   placeholder?: string;
   type?: string;
+  step?: string;
 };
 
 export default function Input({
@@ -10,6 +11,7 @@ export default function Input({
   name = id,
   placeholder = id,
   type = 'text',
+  step,
 }: InputProps) {
   return (
     <input
@@ -17,6 +19,7 @@ export default function Input({
       id={id}
       type={type}
       name={name}
+      step={step}
       className="bg-foreground text-background p-1 rounded-sm"
     />
   );
