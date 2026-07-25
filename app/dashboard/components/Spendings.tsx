@@ -21,7 +21,7 @@ export default function Spendings({ spendings }: Props) {
   };
 
   return (
-    <ul className="mb-2 grid grid-cols-[auto_100px_1fr] gap-y-1">
+    <ul className="mb-2 grid grid-cols-[repeat(2,1fr)_auto] gap-y-1">
       <AnimatePresence initial={false}>
         {spendings.map((spending) => (
           <motion.li
