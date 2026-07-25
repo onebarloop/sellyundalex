@@ -12,7 +12,7 @@ export async function add(formData: FormData) {
   const spending = formData.get('spending');
   const amount = formData.get('amount');
 
-  const fixed = Number(amount).toFixed(2) * 100;
+  const fixed = Number(Number(amount).toFixed(2)) * 100;
 
   await db.insert(spendings).values({
     title: String(spending),
