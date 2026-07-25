@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function Spendings({ spendings }: Props) {
-  const convert = (amount: number | null) => {
+  const convertAmount = (amount: number | null) => {
     if (!amount) return '0 €';
     return new Intl.NumberFormat('de-DE', {
       style: 'currency',
@@ -20,12 +20,16 @@ export default function Spendings({ spendings }: Props) {
     }).format(amount / 100);
   };
 
+  // const convertDate(date: string) {
+  //   return date.toLocaleDateString({ day: 'numeric', month: 'short' })
+  // }
+
   return (
-    <ul className="mb-2 grid grid-cols-[repeat(2,1fr)_auto] gap-y-1">
+    <ul className="mb-2 grid grid-cols-[repeat(3,1fr)_auto] gap-x-2 gap-y-1">
       <AnimatePresence initial={false}>
         {spendings.map((spending) => (
           <motion.li
-            className={`p-2 col-span-3 grid grid-cols-subgrid ${spending.spender?.name === 'Alex' ? 'bg-pink-900' : 'bg-purple-800'}`}
+            className={`p-2 col-span-4 grid grid-cols-subgrid ${spending.spender?.name === 'Alex' ? 'bg-pink-900' : 'bg-purple-800'}`}
             key={spending.id}
             exit={{ opacity: 0, scale: 0 }}
             initial={{ opacity: 0, scale: 0 }}
@@ -33,15 +37,19 @@ export default function Spendings({ spendings }: Props) {
           >
             <span className="truncate ">{spending.title}</span>
             <span className="flex gap-1 font-bold">
-              {convert(spending.amount)}
+              {convertAmount(spending.amount)}
             </span>
-            {/* <span>{spending.createdAt.toLocaleDateString()}</span>
-            <span>{spending.createdAt.toLocaleTimeString()}</span> */}
+            <span className="truncate">
+              {spending.createdAt.toLocaleDateString('de-DE', {
+                day: 'numeric',
+                month: 'short',
+              })}
+            </span>
             <button
               className="ml-auto"
               onClick={async () => await remove(spending)}
             >
-              <Trash2 />
+              <Trash2 size={18} />
             </button>
           </motion.li>
         ))}

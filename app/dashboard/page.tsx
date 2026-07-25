@@ -9,6 +9,9 @@ export default async function DashboardPage() {
     with: {
       spender: true,
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
   return (
     <div>
