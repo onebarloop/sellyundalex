@@ -4,6 +4,7 @@ type InputProps = {
   placeholder?: string;
   type?: string;
   step?: string;
+  className?: string;
 };
 
 export default function Input({
@@ -12,6 +13,7 @@ export default function Input({
   placeholder = id,
   type = 'text',
   step,
+  className,
 }: InputProps) {
   return (
     <input
@@ -20,7 +22,7 @@ export default function Input({
       type={type}
       name={name}
       step={step}
-      className="bg-foreground text-background p-1 rounded-sm"
+      className={`${className} bg-foreground text-background p-1 rounded-md outline-black `}
     />
   );
 }

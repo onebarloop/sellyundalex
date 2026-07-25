@@ -3,7 +3,7 @@
 import { remove } from '@/src/actions/spendings';
 import type { Spending, User } from '@/src/db/schema';
 import { AnimatePresence, motion } from 'motion/react';
-import { Trash2, CircleEuro } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
 type SpendingWithSpender = Spending & { spender: User | null };
 
