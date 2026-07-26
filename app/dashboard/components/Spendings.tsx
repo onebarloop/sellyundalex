@@ -29,7 +29,7 @@ export default function Spendings({ spendings }: Props) {
       <AnimatePresence initial={false}>
         {spendings.map((spending) => (
           <motion.li
-            className={`p-2 col-span-4 grid grid-cols-subgrid ${spending.spender?.name === 'Alex' ? 'bg-pink-300' : 'bg-purple-300'}`}
+            className={`p-2 col-span-4 grid grid-cols-subgrid ${spending.spender?.name === 'Alex' ? 'bg-violet-200' : 'bg-fuchsia-200'}`}
             key={spending.id}
             exit={{ opacity: 0, scale: 0 }}
             initial={{ opacity: 0, scale: 0 }}

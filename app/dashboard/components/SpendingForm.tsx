@@ -15,7 +15,12 @@ export default function SpendingForm() {
   };
 
   return (
-    <Popup show={show} onShowChange={setShow} icon={<HandCoins size={32} />}>
+    <Popup
+      className="bg-rose-400 border-3 fixed bottom-6 right-6"
+      show={show}
+      onShowChange={setShow}
+      icon={<HandCoins size={40} />}
+    >
       <form
         onClick={(e) => e.stopPropagation()}
         action={handleSubmit}
@@ -30,7 +35,7 @@ export default function SpendingForm() {
           id="amount"
         />
         <Button
-          className="border-3 py-3 rounded-xl self-end mt-8 w-full flex justify-center"
+          className="border-3 py-3 rounded-xl self-end mt-8 w-full bg-rose-400 text-foreground border-foreground flex justify-center"
           type="submit"
         >
           <Send className="" size={46} />

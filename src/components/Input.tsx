@@ -22,7 +22,7 @@ export default function Input({
       type={type}
       name={name}
       step={step}
-      className={`${className} bg-foreground text-background p-1 rounded-md outline-black `}
+      className={`${className} bg-rose-200 text-foreground p-1 rounded-md outline-foreground `}
     />
   );
 }
