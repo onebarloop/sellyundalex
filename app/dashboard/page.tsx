@@ -3,6 +3,7 @@ import { db } from '@/src/db/db';
 import Spendings from './components/Spendings';
 
 export default async function DashboardPage() {
+  await verifySession();
   const spendings = await db.query.spendings.findMany({
     with: {
       spender: true,
