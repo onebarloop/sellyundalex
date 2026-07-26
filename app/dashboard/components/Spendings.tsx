@@ -5,7 +5,7 @@ import type { Spending, User } from '@/src/db/schema';
 import { AnimatePresence, motion } from 'motion/react';
 import { Trash2, ChevronDown, ChevronUp, Settings } from 'lucide-react';
 import { useState } from 'react';
-import Popup from '@/src/components/Popup';
+import { convertAmount } from '@/src/lib/convert';
 
 type SpendingWithSpender = Spending & { spender: User | null };
 
@@ -49,14 +49,6 @@ function Spending({
   openItem: null | number;
   onClick: (id: number) => void;
 }) {
-  const convertAmount = (amount: number | null) => {
-    if (!amount) return '0 €';
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(amount / 100);
-  };
-
   const isOpen = spending.id === openItem;
 
   return (
