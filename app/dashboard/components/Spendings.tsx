@@ -3,7 +3,9 @@
 import { remove } from '@/src/actions/spendings';
 import type { Spending, User } from '@/src/db/schema';
 import { AnimatePresence, motion } from 'motion/react';
-import { Trash2 } from 'lucide-react';
+import { Trash2, ChevronDown, ChevronUp, Settings } from 'lucide-react';
+import { useState } from 'react';
+import Popup from '@/src/components/Popup';
 
 type SpendingWithSpender = Spending & { spender: User | null };
 
@@ -12,6 +14,41 @@ type Props = {
 };
 
 export default function Spendings({ spendings }: Props) {
+  const [openItem, setOpenItem] = useState<null | number>(null);
+
+  const handleClick = (id: number) => {
+    if (id === openItem) {
+      setOpenItem(null);
+    } else {
+      setOpenItem(id);
+    }
+  };
+
+  return (
+    <ul className="mb-2 grid grid-cols-[repeat(3,1fr)_auto] gap-x-2 gap-y-1">
+      <AnimatePresence initial={false}>
+        {spendings.map((spending) => (
+          <Spending
+            spending={spending}
+            openItem={openItem}
+            key={spending.id}
+            onClick={handleClick}
+          />
+        ))}
+      </AnimatePresence>
+    </ul>
+  );
+}
+
+function Spending({
+  spending,
+  openItem,
+  onClick,
+}: {
+  spending: SpendingWithSpender;
+  openItem: null | number;
+  onClick: (id: number) => void;
+}) {
   const convertAmount = (amount: number | null) => {
     if (!amount) return '0 €';
     return new Intl.NumberFormat('de-DE', {
@@ -20,40 +57,51 @@ export default function Spendings({ spendings }: Props) {
     }).format(amount / 100);
   };
 
-  // const convertDate(date: string) {
-  //   return date.toLocaleDateString({ day: 'numeric', month: 'short' })
-  // }
+  const isOpen = spending.id === openItem;
 
   return (
-    <ul className="mb-2 grid grid-cols-[repeat(3,1fr)_auto] gap-x-2 gap-y-1">
-      <AnimatePresence initial={false}>
-        {spendings.map((spending) => (
-          <motion.li
-            className={`p-2 col-span-4 grid grid-cols-subgrid ${spending.spender?.name === 'Alex' ? 'bg-violet-200' : 'bg-fuchsia-200'}`}
-            key={spending.id}
-            exit={{ opacity: 0, scale: 0 }}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-          >
-            <span className="truncate ">{spending.title}</span>
-            <span className="flex gap-1 font-bold">
-              {convertAmount(spending.amount)}
-            </span>
-            <span className="truncate">
-              {spending.createdAt.toLocaleDateString('de-DE', {
-                day: 'numeric',
-                month: 'short',
-              })}
-            </span>
-            <button
-              className="ml-auto"
-              onClick={async () => await remove(spending)}
-            >
+    <motion.li
+      className={`p-2 col-span-4 grid grid-cols-subgrid gap-y-3 text-xs ${spending.spender?.name === 'Alex' ? 'bg-violet-200' : 'bg-fuchsia-200'}`}
+      onClick={() => onClick(spending.id)}
+      exit={{ opacity: 0, scale: 0 }}
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+    >
+      {isOpen ? (
+        <>
+          <span className="row-span-2">{spending.title}</span>
+          <span className="flex gap-1 font-bold">
+            {convertAmount(spending.amount)}
+          </span>
+          <span className="truncate">
+            {spending.createdAt.toLocaleDateString('de-DE', {
+              day: 'numeric',
+              month: 'short',
+            })}
+          </span>
+          <ChevronUp size={18} />
+          <div className="col-span-3 flex gap-2 items-center justify-end">
+            <Settings className="opacity-40" size={18} />
+            <button onClick={async () => await remove(spending)}>
               <Trash2 size={18} />
             </button>
-          </motion.li>
-        ))}
-      </AnimatePresence>
-    </ul>
+          </div>
+        </>
+      ) : (
+        <>
+          <span className="truncate">{spending.title}</span>
+          <span className="flex gap-1 font-bold">
+            {convertAmount(spending.amount)}
+          </span>
+          <span className="truncate">
+            {spending.createdAt.toLocaleDateString('de-DE', {
+              day: 'numeric',
+              month: 'short',
+            })}
+          </span>
+          <ChevronDown size={18} />
+        </>
+      )}
+    </motion.li>
   );
 }
