@@ -1,6 +1,11 @@
 import { verifySession } from '@/src/lib/session';
+import { Construction } from 'lucide-react';
 
 export default async function Page() {
   await verifySession();
-  return <div className="flex h-full r justify-center text-3xl">🚧 🚧 🚧</div>;
+  return (
+    <div className="flex justify-center">
+      <Construction size={128} />
+    </div>
+  );
 }

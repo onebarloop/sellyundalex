@@ -25,7 +25,7 @@ export default function Popup({
   } else {
     return (
       <dialog
-        className="w-screen h-screen top-0 bg-black/20 backdrop-blur-sm flex items-center justify-center"
+        className="w-dvw h-dvh top-0 bg-black/20 backdrop-blur-sm flex items-center justify-center"
         onClick={() => onShowChange(false)}
       >
         {children}

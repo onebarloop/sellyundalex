@@ -24,8 +24,10 @@ export default async function Page() {
 
   return (
     <div>
-      <h2>August</h2>
-      {convertAmount(amount)}
+      <h2 className="mb-6">Ausgaben im August</h2>
+      <div className="aspect-square flex justify-center items-center text-6xl bg-rose-200 rounded-full">
+        {convertAmount(amount)}
+      </div>
     </div>
   );
 }
