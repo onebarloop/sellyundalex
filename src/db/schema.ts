@@ -13,7 +13,6 @@ export const spendings = pgTable('spendings', {
   title: varchar({ length: 255 }).notNull(),
   amount: integer().default(0),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-  date: timestamp('date'),
   spenderId: integer('spender_id').notNull(),
 });
 

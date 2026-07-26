@@ -1,0 +1,1 @@
+ALTER TABLE "spendings" DROP COLUMN "date";
