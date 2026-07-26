@@ -3,6 +3,8 @@ import Button from '@/src/components/Button';
 import { logout } from '@/src/actions/auth';
 import { verifySession } from '@/src/lib/session';
 import { LogOut } from 'lucide-react';
+import Link from 'next/link';
+import Nav from './components/Nav';
 
 export default async function Layout({
   children,
@@ -13,15 +15,7 @@ export default async function Layout({
 
   return (
     <>
-      <div className="flex gap-4 justify-between items-center mb-4">
-        <p className="text-sm text-foreground/50">Hallo {username}</p>
-        <Button
-          className="text-sm   border-none flex gap-2 items-center"
-          onClick={logout}
-        >
-          <LogOut size={18} />
-        </Button>
-      </div>
+      <Nav username={username} />
       {children}
       <SpendingForm />
     </>
