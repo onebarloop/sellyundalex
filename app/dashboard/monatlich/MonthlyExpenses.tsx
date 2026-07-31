@@ -5,7 +5,6 @@ import { motion, stagger } from 'motion/react';
 
 export default function MonthlyExpenses({ amount }: { amount: number }) {
   const chars = convertAmount(amount).split('');
-  console.log(chars);
 
   const container = {
     hidden: { x: -100 },
