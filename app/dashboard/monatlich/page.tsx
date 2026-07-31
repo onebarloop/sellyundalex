@@ -1,6 +1,7 @@
 import { verifySession } from '@/src/lib/session';
 import { db } from '@/src/db/db';
-import { convertAmount } from '@/src/lib/convert';
+import MonthlyExpenses from './MonthlyExpenses';
+
 export default async function Page() {
   const start = new Date('2026-08-01T00:00:00.000Z');
   const end = new Date('2026-08-31T23:59:59.999Z');
@@ -25,9 +26,7 @@ export default async function Page() {
   return (
     <div>
       <h2 className="mb-6">Ausgaben im August</h2>
-      <div className="aspect-square flex justify-center items-center text-6xl bg-rose-200 rounded-full">
-        {convertAmount(amount)}
-      </div>
+      <MonthlyExpenses amount={amount} />
     </div>
   );
 }
