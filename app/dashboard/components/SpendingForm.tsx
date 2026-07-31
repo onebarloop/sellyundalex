@@ -38,7 +38,7 @@ export default function SpendingForm() {
           className="border-3 py-3 rounded-xl self-end mt-8 w-full bg-rose-400 text-foreground border-foreground flex justify-center"
           type="submit"
         >
-          <Send className="" size={46} />
+          <Send size={46} />
         </Button>
       </form>
     </Popup>

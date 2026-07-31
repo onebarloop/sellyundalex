@@ -16,20 +16,19 @@ export default function Popup({
   show,
   onShowChange,
 }: Props) {
-  if (!show) {
-    return (
+  return (
+    <>
       <Button className={className} onClick={() => onShowChange(true)}>
         {icon}
       </Button>
-    );
-  } else {
-    return (
-      <dialog
-        className="w-dvw h-dvh top-0 bg-black/20 backdrop-blur-sm flex items-center justify-center"
-        onClick={() => onShowChange(false)}
-      >
-        {children}
-      </dialog>
-    );
-  }
+      {show && (
+        <dialog
+          className="w-dvw h-dvh top-0 bg-black/20 backdrop-blur-sm flex items-center justify-center"
+          onClick={() => onShowChange(false)}
+        >
+          {children}
+        </dialog>
+      )}
+    </>
+  );
 }
