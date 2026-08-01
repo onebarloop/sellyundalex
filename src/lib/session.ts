@@ -1,4 +1,4 @@
-import 'server-only'; // Verhindert, dass dieser Code je im Browser landet
+import 'server-only';
 import { cookies } from 'next/headers';
 import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
 import { redirect } from 'next/navigation';
