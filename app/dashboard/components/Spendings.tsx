@@ -2,7 +2,7 @@
 
 import { remove } from '@/src/actions/spendings';
 import type { Spending, User } from '@/src/db/schema';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import { Trash2, ChevronDown, ChevronUp, Settings, Skull } from 'lucide-react';
 import { useState } from 'react';
 import { convertAmount } from '@/src/lib/convert';
@@ -58,12 +58,19 @@ function Spending({
   const isOpen = spending.id === openItem;
   const [showDialog, setShowDialog] = useState(false);
 
+  const variants = {
+    active: { height: '4rem', opacity: 1, scale: 1 },
+    inactive: { height: '2rem', opacity: 1, scale: 1 },
+  };
+
   return (
     <motion.li
-      className={`p-2 col-span-4 grid grid-cols-subgrid gap-y-3 text-xs ${spending.spender?.name === 'Alex' ? 'bg-violet-200' : 'bg-fuchsia-200'}`}
+      layout="position"
+      className={`p-2 col-span-4 grid grid-cols-subgrid gap-y-3 text-xs ${isOpen ? 'grid-rows-[1fr_1fr]' : 'grid-rows-[1fr]'} ${spending.spender?.name === 'Alex' ? 'bg-violet-200' : 'bg-fuchsia-200'}`}
       exit={{ opacity: 0, scale: 0 }}
+      variants={variants}
       initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
+      animate={isOpen ? 'active' : 'inactive'}
     >
       {isOpen ? (
         <>
@@ -78,25 +85,31 @@ function Spending({
             })}
           </span>
           <ChevronUp size={18} onClick={() => onClick(spending.id)} />
-          <div className="col-span-3 flex gap-2 items-center justify-end">
-            <Settings className="opacity-40" size={18} />
-            <Popup
-              className="border-none p-0!"
-              onShowChange={setShowDialog}
-              show={showDialog}
-              disabled={spending.spender?.name !== userName}
-              icon={<Trash2 size={18} />}
+          <AnimatePresence>
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              className="col-span-3 flex gap-2 items-center justify-end"
             >
-              <Button
-                onClick={async () => await remove(spending)}
-                className="text-2xl py-3 bg-rose-400 border-3 font-bold flex gap-2 items-center"
+              <Settings className="opacity-40" size={18} />
+              <Popup
+                className="border-none p-0!"
+                onShowChange={setShowDialog}
+                show={showDialog}
+                disabled={spending.spender?.name !== userName}
+                icon={<Trash2 size={18} />}
               >
-                <Skull size={30} />
-                <span>Sicher?</span>
-              </Button>
-            </Popup>
-            {/* <button onClick={async () => await remove(spending)}></button> */}
-          </div>
+                <Button
+                  onClick={async () => await remove(spending)}
+                  className="text-2xl py-3 bg-rose-400 border-3 font-bold flex gap-2 items-center"
+                >
+                  <Skull size={30} />
+                  <span>Sicher?</span>
+                </Button>
+              </Popup>
+            </motion.div>
+          </AnimatePresence>
         </>
       ) : (
         <>
