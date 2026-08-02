@@ -11,7 +11,7 @@ const totalsPerMonth = async () => {
       total: sum(spendings.amount).mapWith(Number),
     })
     .from(spendings)
-    .groupBy(sql`DATE_TRUNC('month', ${spendings.spendingDate})`)
+    .groupBy(sql<string>`DATE_TRUNC('month', ${spendings.spendingDate})`)
     .orderBy(desc(sql`DATE_TRUNC('month', ${spendings.spendingDate})`));
 
   return total;
@@ -22,15 +22,15 @@ type TotalsPerMonth = Awaited<ReturnType<typeof totalsPerMonth>>;
 const usersPerMonth = async () =>
   await db
     .select({
-      month: sql`DATE_TRUNC('month', ${spendings.spendingDate})::date`,
+      month: sql<string>`DATE_TRUNC('month', ${spendings.spendingDate})::date`,
       userId: users.id,
       userName: users.name,
-      total: sql<number>`SUM(${spendings.amount})::int`,
+      total: sum(spendings.amount).mapWith(Number),
     })
     .from(spendings)
     .leftJoin(users, eq(spendings.spenderId, users.id))
     .groupBy(
-      sql`DATE_TRUNC('month', ${spendings.spendingDate})`,
+      sql<string>`DATE_TRUNC('month', ${spendings.spendingDate})`,
       users.id,
       users.name,
     )
