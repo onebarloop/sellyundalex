@@ -5,6 +5,7 @@ type InputProps = {
   type?: string;
   step?: string;
   className?: string;
+  defaultValue?: string;
 };
 
 export default function Input({
@@ -14,6 +15,7 @@ export default function Input({
   type = 'text',
   step,
   className,
+  defaultValue,
 }: InputProps) {
   return (
     <input
@@ -22,6 +24,7 @@ export default function Input({
       type={type}
       name={name}
       step={step}
+      defaultValue={defaultValue}
       className={`${className} bg-rose-100 text-foreground p-1 rounded-md outline-foreground `}
     />
   );

@@ -2,14 +2,16 @@
 
 import { remove } from '@/src/actions/spendings';
 import type { Spending, User } from '@/src/db/schema';
-import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
-import { Trash2, ChevronDown, ChevronUp, Settings, Skull } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
+import { Trash2, ChevronDown, ChevronUp, Skull } from 'lucide-react';
 import { useState } from 'react';
 import { convertAmount } from '@/src/lib/convert';
 import Popup from '@/src/components/Popup';
 import Button from '@/src/components/Button';
 
-type SpendingWithSpender = Spending & { spender: User | null };
+import UpdateForm from './UpdateForm';
+
+export type SpendingWithSpender = Spending & { spender: User | null };
 
 type Props = {
   spendings: SpendingWithSpender[];
@@ -56,7 +58,7 @@ function Spending({
   onClick: (id: number) => void;
 }) {
   const isOpen = spending.id === openItem;
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const variants = {
     active: { height: '4rem', opacity: 1, scale: 1 },
@@ -92,11 +94,11 @@ function Spending({
               exit={{ scale: 0, opacity: 0 }}
               className="col-span-3 flex gap-2 items-center justify-end"
             >
-              <Settings className="opacity-40" size={18} />
+              <UpdateForm spending={spending} userName={userName} />
               <Popup
                 className="border-none p-0!"
-                onShowChange={setShowDialog}
-                show={showDialog}
+                onShowChange={setShowDeleteDialog}
+                show={showDeleteDialog}
                 disabled={spending.spender?.name !== userName}
                 icon={<Trash2 size={18} />}
               >

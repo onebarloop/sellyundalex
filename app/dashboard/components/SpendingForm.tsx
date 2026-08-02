@@ -3,7 +3,7 @@ import { add } from '@/src/actions/spendings';
 import Input from '@/src/components/Input';
 import { useState } from 'react';
 import Button from '@/src/components/Button';
-import { HandCoins, Send } from 'lucide-react';
+import { HandCoins, SavePlus } from 'lucide-react';
 import Popup from '@/src/components/Popup';
 
 export default function SpendingForm() {
@@ -35,10 +35,11 @@ export default function SpendingForm() {
           id="amount"
         />
         <Button
-          className="border-3 py-3 rounded-xl self-end mt-8 w-full bg-rose-400 text-foreground border-foreground flex justify-center"
+          className="border-3 justify-between py-3 rounded-xl w-full self-end mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
           type="submit"
         >
-          <Send size={46} />
+          <span>Speichern</span>
+          <SavePlus size={40} />
         </Button>
       </form>
     </Popup>
