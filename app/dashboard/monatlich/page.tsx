@@ -6,6 +6,7 @@ export default async function Page() {
   await verifySession();
 
   const totals = await totalsAndUsersPerMonth();
+  console.log(totals);
 
   return <MonthlyExpenses data={totals} />;
 }

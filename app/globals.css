@@ -10,6 +10,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-alex: var(--color-rose-400);
+  --color-selly: var(--color-sky-400);
 }
 
 body {

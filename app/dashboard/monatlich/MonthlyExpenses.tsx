@@ -1,7 +1,6 @@
 'use client';
 
-import { convertAmount, convertToMonth } from '@/src/lib/convert';
-import { motion, stagger } from 'motion/react';
+import { convertToMonth, convertAmount } from '@/src/lib/convert';
 import { type TotalsAndUsersPerMonth } from '@/src/db/queries';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
@@ -9,6 +8,8 @@ import { ArrowBigRight, ArrowBigLeft } from 'lucide-react';
 import Button from '@/src/components/Button';
 import 'swiper/css';
 import 'swiper/css/effect-cube';
+import Chart from 'chart.js/auto';
+import { useRef, useEffect } from 'react';
 
 export default function MonthlyExpenses({
   data,
@@ -49,35 +50,49 @@ export default function MonthlyExpenses({
 }
 
 function Month({ month }: { month: TotalsAndUsersPerMonth[number] }) {
-  const chars = convertAmount(month.total).split('');
+  const canvasRef = useRef(null);
 
-  const container = {
-    hidden: {},
-    show: {
-      transition: {
-        delayChildren: stagger(0.1),
+  useEffect(() => {
+    if (!canvasRef.current) return;
+    const styles = getComputedStyle(document.documentElement);
+    const sellyColor = styles.getPropertyValue('--color-selly');
+    const alexColor = styles.getPropertyValue('--color-alex');
+    const chart = new Chart(canvasRef.current, {
+      type: 'doughnut',
+      data: {
+        labels: month.users.map((u) => u.name),
+        datasets: [
+          {
+            label: 'Betrag',
+            data: month.users.map((u) => u.total),
+            backgroundColor: [sellyColor, alexColor],
+            hoverOffset: 4,
+          },
+        ],
       },
-    },
-  };
+      options: {
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label(context) {
+                return `${context.dataset.label}: ${convertAmount(context.parsed)}`;
+              },
+            },
+          },
+        },
+      },
+    });
 
-  const item = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1 },
-  };
+    return () => chart.destroy();
+  }, [month]);
 
   return (
     <div className="text-end">
       <h2 className="font-bold mb-6">
         Ausgaben im {convertToMonth(month.month)}
       </h2>
-      <div className="aspect-square border-foreground border-3 flex justify-center items-center text-6xl bg-rose-200 rounded-full">
-        <motion.div variants={container} initial="hidden" animate="show">
-          {chars.map((char, i) => (
-            <motion.span className="last:ml-2" variants={item} key={i}>
-              {char}
-            </motion.span>
-          ))}
-        </motion.div>
+      <div className="w-full aspect-square">
+        <canvas ref={canvasRef}></canvas>
       </div>
     </div>
   );
