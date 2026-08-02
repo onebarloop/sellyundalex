@@ -32,13 +32,13 @@ export default function UpdateForm({ spending, userName }: Props) {
         className="flex flex-col gap-2 items-center"
       >
         <Input
-          className="p-3 text-2xl"
+          className="p-3 text-2xl w-full"
           placeholder="WAS?"
           id="spending"
           defaultValue={spending.title}
         />
         <Input
-          className="p-3 text-2xl"
+          className="p-3 text-2xl w-full"
           placeholder="WIEVIEL?"
           type="number"
           step="0.01"
