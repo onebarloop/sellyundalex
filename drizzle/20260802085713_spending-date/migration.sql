@@ -1,0 +1,1 @@
+UPDATE "spendings" SET "spending_date" = "created_at";

@@ -1,0 +1,1 @@
+ALTER TABLE "spendings" ADD COLUMN "spending_date" timestamp;
