@@ -9,7 +9,7 @@ export default async function DashboardPage() {
       spender: true,
     },
     orderBy: {
-      createdAt: 'desc',
+      spendingDate: 'desc',
     },
   });
   return <Spendings spendings={spendings} userName={username} />;

@@ -79,7 +79,7 @@ function Spending({
             {convertAmount(spending.amount)}
           </span>
           <span className="truncate">
-            {spending.createdAt.toLocaleDateString('de-DE', {
+            {spending.spendingDate.toLocaleDateString('de-DE', {
               day: 'numeric',
               month: 'short',
             })}
@@ -118,7 +118,7 @@ function Spending({
             {convertAmount(spending.amount)}
           </span>
           <span className="truncate">
-            {spending.createdAt.toLocaleDateString('de-DE', {
+            {spending.spendingDate.toLocaleDateString('de-DE', {
               day: 'numeric',
               month: 'short',
             })}
