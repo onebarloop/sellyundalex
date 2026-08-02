@@ -4,11 +4,10 @@ import { convertToMonth, convertAmount } from '@/src/lib/convert';
 import { motion } from 'motion/react';
 import { type TotalsAndUsersPerMonth } from '@/src/db/queries';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import { ArrowBigRight, ArrowBigLeft } from 'lucide-react';
-import Button from '@/src/components/Button';
+import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-cube';
+import 'swiper/css/pagination';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { useRef, useEffect } from 'react';
@@ -23,22 +22,28 @@ export default function MonthlyExpenses({
       className="w-full h-full"
       slidesPerView={1}
       spaceBetween={50}
-      modules={[Navigation]}
-      initialSlide={3}
-      navigation={{
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-        addIcons: false,
-        disabledClass: 'opacity-40',
+      modules={[Pagination]}
+      initialSlide={data.length}
+      pagination={{
+        el: '.swiper-pagination',
+        bulletActiveClass: 'bg-rose-400! opacity-100!',
       }}
+      // navigation={{
+      //   nextEl: '.swiper-button-next',
+      //   prevEl: '.swiper-button-prev',
+      //   addIcons: false,
+      //   disabledClass: 'opacity-40',
+      // }}
     >
       {data.toReversed().map((month) => (
-        <SwiperSlide className="w-full" key={month.month}>
+        <SwiperSlide className="w-full pb-12" key={month.month}>
           <Month month={month} />
         </SwiperSlide>
       ))}
 
-      <div className="flex justify-between">
+      <div className="swiper-pagination"></div>
+
+      {/* <div className="flex justify-between absolute z-100 bottom-0 w-full">
         <Button className="swiper-button-prev bg-mauve-300">
           <ArrowBigLeft className="fill-rose-300" />
         </Button>
@@ -46,7 +51,7 @@ export default function MonthlyExpenses({
         <Button className="swiper-button-next bg-mauve-300">
           <ArrowBigRight className="fill-rose-300" />
         </Button>
-      </div>
+      </div> */}
     </Swiper>
   );
 }
@@ -68,7 +73,9 @@ function Month({ month }: { month: TotalsAndUsersPerMonth[number] }) {
           {
             label: 'Betrag',
             data: month.users.map((u) => u.total),
-            backgroundColor: [sellyColor, alexColor],
+            backgroundColor: month.users.map((u) =>
+              u.name?.toLowerCase() === 'alex' ? alexColor : sellyColor,
+            ),
             hoverOffset: 4,
           },
         ],

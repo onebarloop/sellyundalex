@@ -3,9 +3,7 @@ export function convertAmount(amount: number | null) {
   return new Intl.NumberFormat('de-DE', {
     style: 'currency',
     currency: 'EUR',
-  })
-    .format(amount / 100)
-    .replace(/\s/g, '');
+  }).format(amount / 100);
 }
 
 export function convertToMonth(date: string) {
