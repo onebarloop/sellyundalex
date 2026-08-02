@@ -7,3 +7,8 @@ export function convertAmount(amount: number | null) {
     .format(amount / 100)
     .replace(/\s/g, '');
 }
+
+export function convertToMonth(date: string) {
+  const dateobj = new Date(date);
+  return new Intl.DateTimeFormat('de-DE', { month: 'long' }).format(dateobj);
+}
