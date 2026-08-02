@@ -2,7 +2,7 @@
 
 import { convertAmount, convertToMonth } from '@/src/lib/convert';
 import { motion, stagger } from 'motion/react';
-import { type TotalAmountByDate } from '@/src/db/queries';
+import { type TotalsAndUsersPerMonth } from '@/src/db/queries';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { ArrowBigRight, ArrowBigLeft } from 'lucide-react';
@@ -10,7 +10,11 @@ import Button from '@/src/components/Button';
 import 'swiper/css';
 import 'swiper/css/effect-cube';
 
-export default function MonthlyExpenses({ data }: { data: TotalAmountByDate }) {
+export default function MonthlyExpenses({
+  data,
+}: {
+  data: TotalsAndUsersPerMonth;
+}) {
   return (
     <Swiper
       className="w-full h-full"
@@ -44,7 +48,7 @@ export default function MonthlyExpenses({ data }: { data: TotalAmountByDate }) {
   );
 }
 
-function Month({ month }: { month: TotalAmountByDate[number] }) {
+function Month({ month }: { month: TotalsAndUsersPerMonth[number] }) {
   const chars = convertAmount(month.total).split('');
 
   const container = {

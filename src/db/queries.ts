@@ -1,10 +1,10 @@
 import 'server-only';
 
 import { db } from '@/src/db/db';
-import { sum, sql, desc } from 'drizzle-orm';
-import { spendings } from '@/src/db/schema';
+import { sum, sql, desc, eq } from 'drizzle-orm';
+import { spendings, users } from '@/src/db/schema';
 
-const getTotalAmountByDate = async () => {
+const totalsPerMonth = async () => {
   const total = await db
     .select({
       month: sql<string>`DATE_TRUNC('month', ${spendings.spendingDate})::date`,
@@ -17,8 +17,49 @@ const getTotalAmountByDate = async () => {
   return total;
 };
 
-type TotalAmountByDate = Awaited<ReturnType<typeof getTotalAmountByDate>>;
+type TotalsPerMonth = Awaited<ReturnType<typeof totalsPerMonth>>;
 
-export { getTotalAmountByDate };
+const usersPerMonth = async () =>
+  await db
+    .select({
+      month: sql`DATE_TRUNC('month', ${spendings.spendingDate})::date`,
+      userId: users.id,
+      userName: users.name,
+      total: sql<number>`SUM(${spendings.amount})::int`,
+    })
+    .from(spendings)
+    .leftJoin(users, eq(spendings.spenderId, users.id))
+    .groupBy(
+      sql`DATE_TRUNC('month', ${spendings.spendingDate})`,
+      users.id,
+      users.name,
+    )
+    .orderBy(desc(sql`DATE_TRUNC('month', ${spendings.spendingDate})`));
 
-export type { TotalAmountByDate };
+type UsersPerMonth = Awaited<ReturnType<typeof usersPerMonth>>;
+
+const totalsAndUsersPerMonth = async () => {
+  const [totals, users] = await Promise.all([
+    totalsPerMonth(),
+    usersPerMonth(),
+  ]);
+  return totals.map((m) => ({
+    month: m.month,
+    total: Number(m.total),
+    users: users
+      .filter((u) => String(u.month) === String(m.month))
+      .map((u) => ({
+        id: u.userId,
+        name: u.userName,
+        total: Number(u.total),
+      })),
+  }));
+};
+
+type TotalsAndUsersPerMonth = Awaited<
+  ReturnType<typeof totalsAndUsersPerMonth>
+>;
+
+export { totalsAndUsersPerMonth };
+
+export type { TotalsPerMonth, UsersPerMonth, TotalsAndUsersPerMonth };
