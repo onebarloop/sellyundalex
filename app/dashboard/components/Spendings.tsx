@@ -39,17 +39,16 @@ function Spending({
 }) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  const variants = {
-    active: { height: '4rem', opacity: 1, scale: 1 },
-    inactive: { height: '2rem', opacity: 1, scale: 1 },
-  };
+  const color =
+    spending.spender?.name.toLowerCase() === 'alex'
+      ? 'border-l-alex'
+      : 'border-l-selly';
 
   return (
     <motion.li
       layout="position"
-      className={`border-l-8 border-l-${spending.spender?.name.toLowerCase()} border-mauve-600 flex flex-col rounded-lg`}
+      className={`border-l-8 ${color} border-mauve-600 flex flex-col rounded-lg`}
       exit={{ opacity: 0, scale: 0 }}
-      variants={variants}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
     >
