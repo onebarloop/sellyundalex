@@ -66,7 +66,7 @@ function Spending({
   return (
     <motion.li
       layout="position"
-      className={`p-2 col-span-4 grid grid-cols-subgrid gap-y-3 text-xs ${isOpen ? 'grid-rows-[1fr_1fr]' : 'grid-rows-[1fr]'} ${spending.spender?.name === 'Alex' ? 'bg-violet-200' : 'bg-fuchsia-200'}`}
+      className={`p-2 border-l-8 ${spending.spender?.name === 'Alex' ? 'border-l-rose-300' : 'border-l-purple-300'} border-mauve-600 col-span-4 grid grid-cols-subgrid gap-y-3 text-xs bg-mauve-200`}
       exit={{ opacity: 0, scale: 0 }}
       variants={variants}
       initial={{ opacity: 0, scale: 0 }}

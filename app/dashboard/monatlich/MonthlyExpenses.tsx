@@ -66,7 +66,7 @@ function Month({ month }: { month: TotalAmountByDate[number] }) {
       <h2 className="font-bold mb-6">
         Ausgaben im {convertToMonth(month.month)}
       </h2>
-      <div className="aspect-square border-foreground border-2 flex justify-center items-center text-6xl bg-rose-200 rounded-full">
+      <div className="aspect-square border-foreground border-3 flex justify-center items-center text-6xl bg-rose-200 rounded-full">
         <motion.div variants={container} initial="hidden" animate="show">
           {chars.map((char, i) => (
             <motion.span className="last:ml-2" variants={item} key={i}>
