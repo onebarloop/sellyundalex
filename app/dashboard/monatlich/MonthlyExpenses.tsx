@@ -1,6 +1,6 @@
 'use client';
 
-import { convertToMonth, convertAmount } from '@/src/lib/convert';
+import { toCurrency, toMonth } from '@/src/lib/utils';
 import { motion } from 'motion/react';
 import { type TotalsAndUsersPerMonth } from '@/src/db/queries';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -97,7 +97,7 @@ function Month({ month }: { month: TotalsAndUsersPerMonth[number] }) {
               weight: 'bold',
             },
             formatter(value) {
-              return convertAmount(value);
+              return toCurrency(value);
             },
             anchor: 'center',
             align: 'center',
@@ -126,7 +126,7 @@ function Month({ month }: { month: TotalsAndUsersPerMonth[number] }) {
             ctx.fillText('Gesamt', x, y - 14);
 
             ctx.font = '700 24px sans-serif';
-            ctx.fillText(convertAmount(month.total), x, y + 18);
+            ctx.fillText(toCurrency(month.total), x, y + 18);
             ctx.restore();
           },
         },
@@ -143,7 +143,7 @@ function Month({ month }: { month: TotalsAndUsersPerMonth[number] }) {
         animate={{ opacity: 1 }}
         className="font-bold mb-6"
       >
-        Ausgaben im {convertToMonth(month.month)}
+        Ausgaben im {toMonth(month.month)}
       </motion.h2>
       <div className="w-full aspect-square">
         <canvas ref={canvasRef}></canvas>
