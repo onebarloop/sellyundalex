@@ -5,6 +5,7 @@ import { spendings, type Spending } from '../db/schema';
 import { verifySession } from '../lib/session';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
+import { toCents } from '../lib/utils';
 
 export async function add(formData: FormData) {
   const { userId } = await verifySession();
@@ -12,7 +13,7 @@ export async function add(formData: FormData) {
   const spending = formData.get('spending');
   const amount = formData.get('amount');
 
-  const fixed = Number(Number(amount).toFixed(2)) * 100;
+  const fixed = toCents(amount);
 
   await db.insert(spendings).values({
     title: String(spending),
@@ -30,7 +31,7 @@ export async function update(formData: FormData) {
   const spendingDate = String(formData.get('date'));
   const spendingId = Number(formData.get('spending-id'));
 
-  const fixed = Number(Number(amount).toFixed(2)) * 100;
+  const fixed = toCents(amount);
 
   await db
     .update(spendings)

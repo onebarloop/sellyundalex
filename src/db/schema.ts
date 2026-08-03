@@ -11,7 +11,7 @@ export const users = pgTable('users', {
 export const spendings = pgTable('spendings', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   title: varchar({ length: 255 }).notNull(),
-  amount: integer().default(0),
+  amount: integer().default(0).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   spendingDate: timestamp('spending_date').defaultNow().notNull(),
   spenderId: integer('spender_id').notNull(),

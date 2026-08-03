@@ -5,7 +5,7 @@ import type { Spending, User } from '@/src/db/schema';
 import { AnimatePresence, motion } from 'motion/react';
 import { Trash2, ShieldAlert, Calendar } from 'lucide-react';
 import { useState } from 'react';
-import { convertAmount } from '@/src/lib/convert';
+import { toCurrency } from '@/src/lib/utils';
 import Popup from '@/src/components/Popup';
 import Button from '@/src/components/Button';
 
@@ -74,7 +74,7 @@ function Spending({
         </div>
       </div>
       <div className="p-2 bg-mauve-200 text-xs flex justify-between">
-        <span className="">{convertAmount(spending.amount)}</span>
+        <span className="">{toCurrency(spending.amount)}</span>
         <span className="inline-flex items-center gap-1">
           <Calendar className="" size={14} />
           {spending.spendingDate.toLocaleDateString('de-DE', {
