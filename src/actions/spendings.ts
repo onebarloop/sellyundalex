@@ -12,6 +12,9 @@ export async function add(formData: FormData) {
 
   const spending = formData.get('spending');
   const amount = formData.get('amount');
+  const type = formData.get('spending-type');
+
+  console.log(type);
 
   const fixed = toCents(amount);
 

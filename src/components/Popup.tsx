@@ -4,7 +4,7 @@ type Props = {
   trigger: ReactNode;
   children: ReactNode;
   show: boolean;
-  onClick?: () => void;
+  onClick: () => void;
 };
 
 export default function Popup({ trigger, children, show, onClick }: Props) {

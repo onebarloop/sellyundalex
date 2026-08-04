@@ -3,6 +3,7 @@ import { add } from '@/src/actions/spendings';
 import Input from '@/src/components/Input';
 import { useState } from 'react';
 import Button from '@/src/components/Button';
+import RadioGroup from '@/src/components/RadioGroup';
 import { HandCoins, SavePlus } from 'lucide-react';
 import Popup from '@/src/components/Popup';
 
@@ -25,6 +26,7 @@ export default function SpendingForm() {
         </Button>
       }
       show={show}
+      onClick={() => setShow(false)}
     >
       <form
         onClick={(e) => e.stopPropagation()}
@@ -39,6 +41,7 @@ export default function SpendingForm() {
           step="0.01"
           id="amount"
         />
+        <RadioGroup />
         <Button
           className="border-3 justify-between py-3 rounded-xl w-full self-end mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
           type="submit"

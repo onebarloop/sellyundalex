@@ -30,6 +30,7 @@ export default function UpdateForm({ spending, userName }: Props) {
         </Button>
       }
       show={showConfigDialog}
+      onClick={() => setShowConfigDialog(false)}
     >
       <form
         onClick={(e) => e.stopPropagation()}
