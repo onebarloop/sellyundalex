@@ -1,36 +1,20 @@
-import { ReactNode, SetStateAction, Dispatch } from 'react';
-import Button from './Button';
+import { ReactNode } from 'react';
 
 type Props = {
-  className?: string;
-  icon: ReactNode;
+  trigger: ReactNode;
   children: ReactNode;
   show: boolean;
-  disabled?: boolean;
-  onShowChange: Dispatch<SetStateAction<boolean>>;
+  onClick?: () => void;
 };
 
-export default function Popup({
-  className,
-  icon,
-  children,
-  show,
-  disabled,
-  onShowChange,
-}: Props) {
+export default function Popup({ trigger, children, show, onClick }: Props) {
   return (
     <>
-      <Button
-        disabled={disabled}
-        className={className}
-        onClick={() => onShowChange(true)}
-      >
-        {icon}
-      </Button>
+      {trigger}
       {show && (
         <div
           className="w-dvw h-dvh top-0 left-0 bg-black/20 backdrop-blur-sm flex items-center justify-center fixed z-50"
-          onClick={() => onShowChange(false)}
+          onClick={onClick}
         >
           {children}
         </div>

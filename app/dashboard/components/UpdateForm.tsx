@@ -20,11 +20,16 @@ export default function UpdateForm({ spending, userName }: Props) {
   };
   return (
     <Popup
-      className="border-none p-0!"
-      onShowChange={setShowConfigDialog}
+      trigger={
+        <Button
+          className="border-none p-0!"
+          onClick={() => setShowConfigDialog(true)}
+          disabled={spending.spender?.name !== userName}
+        >
+          <Settings size={18} />
+        </Button>
+      }
       show={showConfigDialog}
-      disabled={spending.spender?.name !== userName}
-      icon={<Settings size={18} />}
     >
       <form
         onClick={(e) => e.stopPropagation()}

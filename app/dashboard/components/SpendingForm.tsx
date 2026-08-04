@@ -16,10 +16,15 @@ export default function SpendingForm() {
 
   return (
     <Popup
-      className="bg-rose-400 border-3 fixed bottom-6 right-6"
+      trigger={
+        <Button
+          onClick={() => setShow(true)}
+          className="bg-rose-400 border-3 fixed bottom-6 right-6"
+        >
+          <HandCoins size={40} />
+        </Button>
+      }
       show={show}
-      onShowChange={setShow}
-      icon={<HandCoins size={40} />}
     >
       <form
         onClick={(e) => e.stopPropagation()}

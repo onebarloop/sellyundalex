@@ -39,10 +39,9 @@ function Spending({
 }) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  // const color =
-  //   spending.spender?.name.toLowerCase() === 'alex'
-  //     ? 'border-l-alex'
-  //     : 'border-l-selly';
+  const handleClick = () => {
+    setShowDeleteDialog(!showDeleteDialog);
+  };
 
   return (
     <motion.li
@@ -57,11 +56,17 @@ function Spending({
         <div className="flex gap-2">
           <UpdateForm spending={spending} userName={userName} />
           <Popup
-            className="border-none p-0!"
-            onShowChange={setShowDeleteDialog}
+            trigger={
+              <Button
+                disabled={spending.spender?.name !== userName}
+                className="border-none p-0!"
+                onClick={handleClick}
+              >
+                <Trash2 size={18} />
+              </Button>
+            }
+            onClick={handleClick}
             show={showDeleteDialog}
-            disabled={spending.spender?.name !== userName}
-            icon={<Trash2 size={18} />}
           >
             <Button
               onClick={async () => await remove(spending)}
