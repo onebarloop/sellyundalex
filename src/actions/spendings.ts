@@ -36,6 +36,9 @@ export async function update(formData: FormData) {
   const amount = formData.get('amount');
   const spendingDate = String(formData.get('date'));
   const spendingId = Number(formData.get('spending-id'));
+  const spendingType = formData.get(
+    'spending-type',
+  ) as (typeof spendingTypeEnum.enumValues)[number];
 
   const fixed = toCents(amount);
 
@@ -45,6 +48,7 @@ export async function update(formData: FormData) {
       title: String(spending),
       spendingDate: new Date(spendingDate),
       amount: fixed,
+      spendingType,
     })
     .where(eq(spendings.id, spendingId));
   revalidatePath('/');

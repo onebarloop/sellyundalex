@@ -5,6 +5,7 @@ import Input from '@/src/components/Input';
 import Button from '@/src/components/Button';
 import { CloudSync, Settings } from 'lucide-react';
 import { useState } from 'react';
+import RadioGroup from '@/src/components/RadioGroup';
 
 type Props = {
   spending: SpendingWithSpender;
@@ -61,6 +62,7 @@ export default function UpdateForm({ spending, userName }: Props) {
             .toISOString()
             .slice(0, 10)}
         />
+        <RadioGroup defaultValue={spending.spendingType ?? 'food'} />
         <input
           readOnly
           className="hidden"

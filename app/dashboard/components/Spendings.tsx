@@ -73,9 +73,9 @@ function Spending({
           >
             <Button
               onClick={async () => await remove(spending)}
-              className="text-2xl py-3 bg-rose-400 border-3 font-bold flex gap-2 items-center"
+              className="border-3 gap-4 py-3 rounded-xl mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
             >
-              <ShieldAlert size={30} />
+              <ShieldAlert size={40} />
               <span>Sicher?</span>
             </Button>
           </Popup>
