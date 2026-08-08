@@ -46,12 +46,12 @@ function Spending({
   return (
     <motion.li
       layout="position"
-      className={`border-l-8 text-${spending.spender?.name.toLowerCase()} border-l-current border-mauve-600 flex flex-col rounded-lg`}
+      className={`border-l-8 ${spending.spender?.name === 'Alex' ? 'border-l-alex' : 'border-l-selly'} border-mauve-600 flex flex-col rounded-lg`}
       exit={{ opacity: 0, scale: 0 }}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
     >
-      <div className="p-2 gap-2 text-foreground font-bold bg-mauve-300 flex justify-between items-center">
+      <div className="p-2 gap-2  font-bold bg-mauve-300 flex justify-between items-center">
         <span className="inline-flex items-center gap-2">
           {getSpendingIcon(spending.spendingType, 18)}
         </span>
