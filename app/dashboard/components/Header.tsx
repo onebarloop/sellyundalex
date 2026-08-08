@@ -9,7 +9,7 @@ import Link from 'next/link';
 export default async function Header() {
   const { username } = await verifySession();
   return (
-    <header className="sticky top-0 py-5 bg-background text-sm">
+    <header className="sticky z-10 top-0 py-5 bg-background text-sm">
       <div className="flex gap-4 justify-between items-center mb-4">
         <Link
           className="flex gap-1 items-center text-foreground/50"

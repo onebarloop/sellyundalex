@@ -6,15 +6,16 @@ import { verifySession } from '../lib/session';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { toCents } from '../lib/utils';
+import { spendingTypeEnum } from '../db/schema';
 
 export async function add(formData: FormData) {
   const { userId } = await verifySession();
 
   const spending = formData.get('spending');
   const amount = formData.get('amount');
-  const type = formData.get('spending-type');
-
-  console.log(type);
+  const spendingType = formData.get(
+    'spending-type',
+  ) as (typeof spendingTypeEnum.enumValues)[number];
 
   const fixed = toCents(amount);
 
@@ -22,7 +23,9 @@ export async function add(formData: FormData) {
     title: String(spending),
     amount: fixed,
     spenderId: userId,
+    spendingType: spendingType,
   });
+
   revalidatePath('/');
 }
 

@@ -8,8 +8,8 @@ import { useState } from 'react';
 import { toCurrency } from '@/src/lib/utils';
 import Popup from '@/src/components/Popup';
 import Button from '@/src/components/Button';
-
 import UpdateForm from './UpdateForm';
+import { getSpendingIcon } from '@/src/lib/spendingIcons';
 
 export type SpendingWithSpender = Spending & { spender: User | null };
 
@@ -46,13 +46,16 @@ function Spending({
   return (
     <motion.li
       layout="position"
-      className={`border-l-8 border-l-${spending.spender?.name.toLowerCase()} border-mauve-600 flex flex-col rounded-lg`}
+      className={`border-l-8 text-${spending.spender?.name.toLowerCase()} border-l-current border-mauve-600 flex flex-col rounded-lg`}
       exit={{ opacity: 0, scale: 0 }}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
     >
-      <div className="p-2 font-bold bg-mauve-300 flex justify-between items-center">
-        <span className="">{spending.title}</span>
+      <div className="p-2 gap-2 text-foreground font-bold bg-mauve-300 flex justify-between items-center">
+        <span className="inline-flex items-center gap-2">
+          {getSpendingIcon(spending.spendingType, 18)}
+        </span>
+        <span className="mr-auto">{spending.title}</span>
         <div className="flex gap-2">
           <UpdateForm spending={spending} userName={userName} />
           <Popup
@@ -78,7 +81,7 @@ function Spending({
           </Popup>
         </div>
       </div>
-      <div className="p-2 bg-mauve-200 text-xs flex justify-between">
+      <div className="p-2 text-foreground bg-mauve-200 text-xs flex justify-between">
         <span className="">{toCurrency(spending.amount)}</span>
         <span className="inline-flex items-center gap-1">
           <Calendar className="" size={14} />
