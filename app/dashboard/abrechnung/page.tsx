@@ -1,11 +1,17 @@
 import { verifySession } from '@/src/lib/session';
-import { Construction } from 'lucide-react';
+import Invoice from './Invoice';
+import { totalsAndUsersPerMonth } from '@/src/db/queries';
 
 export default async function Page() {
   await verifySession();
+
+  const totals = await totalsAndUsersPerMonth();
+
   return (
-    <div className="flex justify-center">
-      <Construction size={128} />
-    </div>
+    <ul className="flex flex-col gap-4">
+      {totals.map((month) => (
+        <Invoice key={month.month} month={month} />
+      ))}
+    </ul>
   );
 }

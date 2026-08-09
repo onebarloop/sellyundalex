@@ -1,3 +1,5 @@
+import { User } from '../db/schema';
+
 export function toCurrency(amount: number) {
   return new Intl.NumberFormat('de-DE', {
     style: 'currency',
