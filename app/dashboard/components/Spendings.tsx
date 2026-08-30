@@ -10,23 +10,51 @@ import Popup from '@/src/components/Popup';
 import Button from '@/src/components/Button';
 import UpdateForm from './UpdateForm';
 import { getSpendingIcon } from '@/src/lib/spendingIcons';
-
-export type SpendingWithSpender = Spending & { spender: User | null };
+import { SpendingWithSpender } from '@/src/db/queries';
+import { toMonth } from '@/src/lib/utils';
 
 type Props = {
-  spendings: SpendingWithSpender[];
+  spendings: SpendingWithSpender;
   userName: User['name'];
 };
 
 export default function Spendings({ spendings, userName }: Props) {
+  const byMonth = Object.values(
+    spendings.reduce(
+      (acc, spending) => {
+        const key = spending.spendingDate.toISOString().slice(0, 7); // YYYY-MM
+        if (!acc[key]) {
+          acc[key] = {
+            month: key,
+            items: [],
+          };
+        }
+        acc[key].items.push(spending);
+        return acc;
+      },
+      {} as Record<string, { month: string; items: typeof spendings }>,
+    ),
+  );
+
   return (
-    <ul className="mb-2 flex flex-col gap-2">
-      <AnimatePresence initial={false}>
-        {spendings.map((spending) => (
-          <Spending spending={spending} userName={userName} key={spending.id} />
-        ))}
-      </AnimatePresence>
-    </ul>
+    <div className="relative">
+      {byMonth.map(({ month, items }) => (
+        <ul className="flex flex-col gap-2" key={month}>
+          <h3 className="font-bold pb-4 sticky w-full bg-background top-33">
+            {toMonth(month)}
+          </h3>
+          <AnimatePresence initial={false}>
+            {items.map((spending) => (
+              <Spending
+                spending={spending}
+                userName={userName}
+                key={spending.id}
+              />
+            ))}
+          </AnimatePresence>
+        </ul>
+      ))}
+    </div>
   );
 }
 
@@ -34,7 +62,7 @@ function Spending({
   spending,
   userName,
 }: {
-  spending: SpendingWithSpender;
+  spending: SpendingWithSpender[number];
   userName: User['name'];
 }) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -46,7 +74,7 @@ function Spending({
   return (
     <motion.li
       layout="position"
-      className={`border-l-8 ${spending.spender?.name === 'Alex' ? 'border-l-alex' : 'border-l-selly'} flex flex-col rounded-lg`}
+      className={`border-l-8 ${spending.spender?.name === 'Alex' ? 'border-l-alex' : 'border-l-selly'} flex flex-col rounded-lg last:mb-6`}
       exit={{ opacity: 0, scale: 0 }}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}

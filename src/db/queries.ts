@@ -4,6 +4,18 @@ import { db } from '@/src/db/db';
 import { sum, sql, desc, eq } from 'drizzle-orm';
 import { spendings, users } from '@/src/db/schema';
 
+const spendingsWithSpender = async () =>
+  await db.query.spendings.findMany({
+    with: {
+      spender: true,
+    },
+    orderBy: {
+      spendingDate: 'desc',
+    },
+  });
+
+type SpendingWithSpender = Awaited<ReturnType<typeof spendingsWithSpender>>;
+
 const totalsPerMonth = async () => {
   const total = await db
     .select({
@@ -60,6 +72,11 @@ type TotalsAndUsersPerMonth = Awaited<
   ReturnType<typeof totalsAndUsersPerMonth>
 >;
 
-export { totalsAndUsersPerMonth };
+export { spendingsWithSpender, totalsAndUsersPerMonth };
 
-export type { TotalsPerMonth, UsersPerMonth, TotalsAndUsersPerMonth };
+export type {
+  SpendingWithSpender,
+  TotalsPerMonth,
+  UsersPerMonth,
+  TotalsAndUsersPerMonth,
+};

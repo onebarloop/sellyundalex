@@ -1,14 +1,14 @@
 import { update } from '@/src/actions/spendings';
-import { SpendingWithSpender } from './Spendings';
 import Popup from '@/src/components/Popup';
 import Input from '@/src/components/Input';
 import Button from '@/src/components/Button';
 import { CloudSync, Settings } from 'lucide-react';
 import { useState } from 'react';
 import RadioGroup from '@/src/components/RadioGroup';
+import { SpendingWithSpender } from '@/src/db/queries';
 
 type Props = {
-  spending: SpendingWithSpender;
+  spending: SpendingWithSpender[number];
   userName: string;
 };
 
