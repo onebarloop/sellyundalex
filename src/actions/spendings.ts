@@ -7,6 +7,12 @@ import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { toCents } from '../lib/utils';
 import { spendingTypeEnum } from '../db/schema';
+import { spendingsWithSpender } from '../db/queries';
+
+export async function getSpendings() {
+  await verifySession();
+  return spendingsWithSpender();
+}
 
 export async function add(formData: FormData) {
   const { userId } = await verifySession();
@@ -30,7 +36,7 @@ export async function add(formData: FormData) {
 }
 
 export async function update(formData: FormData) {
-  const { userId } = await verifySession();
+  await verifySession();
 
   const spending = formData.get('spending');
   const amount = formData.get('amount');

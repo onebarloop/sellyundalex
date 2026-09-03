@@ -13,6 +13,7 @@
     "migrate:prod": "node db-scripts.js --migrate"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.102.8",
     "bcryptjs": "^3.0.3",
     "chart.js": "^4.5.1",
     "chartjs-plugin-datalabels": "^2.2.0",

@@ -12,13 +12,34 @@ import UpdateForm from './UpdateForm';
 import { getSpendingIcon } from '@/src/lib/spendingIcons';
 import { SpendingWithSpender } from '@/src/db/queries';
 import { toMonth } from '@/src/lib/utils';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+import { getSpendings } from '@/src/actions/spendings';
 
 type Props = {
   spendings: SpendingWithSpender;
   userName: User['name'];
 };
 
-export default function Spendings({ spendings, userName }: Props) {
+export default function App(props: Props) {
+  const queryClient = new QueryClient();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Spendings {...props} />
+    </QueryClientProvider>
+  );
+}
+
+function Spendings({ spendings, userName }: Props) {
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ['todos'],
+    queryFn: getSpendings,
+  });
   const byMonth = Object.values(
     spendings.reduce(
       (acc, spending) => {
@@ -35,6 +56,8 @@ export default function Spendings({ spendings, userName }: Props) {
       {} as Record<string, { month: string; items: typeof spendings }>,
     ),
   );
+
+  console.log(data);
 
   return (
     <div className="relative">

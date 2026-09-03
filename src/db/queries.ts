@@ -4,7 +4,7 @@ import { db } from '@/src/db/db';
 import { sum, sql, desc, eq } from 'drizzle-orm';
 import { spendings, users } from '@/src/db/schema';
 
-const spendingsWithSpender = async () =>
+const spendingsWithSpender = async (offset: number = 0) =>
   await db.query.spendings.findMany({
     with: {
       spender: true,
@@ -12,6 +12,8 @@ const spendingsWithSpender = async () =>
     orderBy: {
       spendingDate: 'desc',
     },
+    limit: 10,
+    offset,
   });
 
 type SpendingWithSpender = Awaited<ReturnType<typeof spendingsWithSpender>>;
