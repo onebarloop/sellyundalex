@@ -19,7 +19,6 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
-import { getSpendings } from '@/src/actions/spendings';
 
 type Props = {
   spendings: SpendingWithSpender;
@@ -36,10 +35,17 @@ export default function App(props: Props) {
 }
 
 function Spendings({ spendings, userName }: Props) {
+  async function getSpendings() {
+    const res = await fetch('/api');
+    const data = await res.json();
+    return data;
+  }
+
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['todos'],
     queryFn: getSpendings,
   });
+
   const byMonth = Object.values(
     spendings.reduce(
       (acc, spending) => {

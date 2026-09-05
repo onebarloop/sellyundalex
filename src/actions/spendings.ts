@@ -9,11 +9,6 @@ import { toCents } from '../lib/utils';
 import { spendingTypeEnum } from '../db/schema';
 import { spendingsWithSpender } from '../db/queries';
 
-export async function getSpendings() {
-  await verifySession();
-  return spendingsWithSpender();
-}
-
 export async function add(formData: FormData) {
   const { userId } = await verifySession();
 
