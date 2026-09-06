@@ -11,11 +11,17 @@ const spendingsWithSpender = async (page: number = 1) => {
 
   return db.query.spendings.findMany({
     with: {
-      spender: true,
+      spender: {
+        columns: {
+          name: true,
+          id: true,
+        },
+      },
     },
-    orderBy: {
-      spendingDate: 'desc',
-    },
+    orderBy: (fields, { desc }) => [
+      desc(sql`DATE(${fields.spendingDate})`),
+      desc(fields.id),
+    ],
     limit: PAGE_SIZE,
     offset,
   });

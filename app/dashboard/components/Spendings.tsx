@@ -13,12 +13,8 @@ import { getSpendingIcon } from '@/src/lib/spendingIcons';
 import { SpendingWithSpender } from '@/src/db/queries';
 import { toMonth } from '@/src/lib/utils';
 import {
-  useQuery,
-  useMutation,
   useQueryClient,
   useInfiniteQuery,
-  QueryClient,
-  QueryClientProvider,
   type InfiniteData,
 } from '@tanstack/react-query';
 
