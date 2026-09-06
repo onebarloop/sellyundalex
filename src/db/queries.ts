@@ -64,8 +64,8 @@ const spendingsWithSpender = async (cursor?: SpendingCursor) => {
 type SpendingPage = Awaited<ReturnType<typeof spendingsWithSpender>>;
 type SpendingWithSpender = SpendingPage['items'];
 
-const totalsPerMonth = async () => {
-  const total = await db
+const totalsPerMonth = async () =>
+  await db
     .select({
       month: sql<string>`DATE_TRUNC('month', ${spendings.spendingDate})::date`,
       total: sum(spendings.amount).mapWith(Number),
@@ -73,9 +73,6 @@ const totalsPerMonth = async () => {
     .from(spendings)
     .groupBy(sql<string>`DATE_TRUNC('month', ${spendings.spendingDate})`)
     .orderBy(desc(sql`DATE_TRUNC('month', ${spendings.spendingDate})`));
-
-  return total;
-};
 
 type TotalsPerMonth = Awaited<ReturnType<typeof totalsPerMonth>>;
 
