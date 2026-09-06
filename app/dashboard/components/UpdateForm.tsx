@@ -6,7 +6,7 @@ import { CloudSync, Settings } from 'lucide-react';
 import { useState } from 'react';
 import RadioGroup from '@/src/components/RadioGroup';
 import type { SpendingWithSpender } from '@/src/db/queries';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 
 type Props = {
   spending: SpendingWithSpender[number];
@@ -17,13 +17,14 @@ export default function UpdateForm({ spending, userName }: Props) {
   const [showConfigDialog, setShowConfigDialog] = useState(false);
   const queryClient = useQueryClient();
 
-  const handleSubmit = async (formData: FormData) => {
-    setShowConfigDialog(false);
-    await update(formData);
-    await queryClient.invalidateQueries({
-      queryKey: ['spendings'],
-    });
-  };
+  const { mutate } = useMutation({
+    mutationFn: update,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['spendings'] });
+      setShowConfigDialog(false);
+    },
+    onError: () => setShowConfigDialog(false),
+  });
 
   return (
     <Popup
@@ -41,7 +42,7 @@ export default function UpdateForm({ spending, userName }: Props) {
     >
       <form
         onClick={(e) => e.stopPropagation()}
-        action={handleSubmit}
+        action={mutate}
         className="flex flex-col gap-2 items-center"
       >
         <Input

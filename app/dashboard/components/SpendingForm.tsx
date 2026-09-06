@@ -6,24 +6,21 @@ import Button from '@/src/components/Button';
 import RadioGroup from '@/src/components/RadioGroup';
 import { HandCoins, SavePlus } from 'lucide-react';
 import Popup from '@/src/components/Popup';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 
 export default function SpendingForm() {
-  const queryClient = useQueryClient();
-
   const [show, setShow] = useState(false);
 
-  const handleSubmit = async (formData: FormData) => {
-    const createdSpending = await add(formData);
+  const queryClient = useQueryClient();
 
-    if (createdSpending) {
-      await queryClient.invalidateQueries({
-        queryKey: ['spendings'],
-      });
-    }
-
-    setShow(false);
-  };
+  const { mutate } = useMutation({
+    mutationFn: add,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['spendings'] });
+      setShow(false);
+    },
+    onError: () => setShow(false),
+  });
 
   return (
     <Popup
@@ -40,7 +37,7 @@ export default function SpendingForm() {
     >
       <form
         onClick={(e) => e.stopPropagation()}
-        action={handleSubmit}
+        action={mutate}
         className="flex flex-col gap-2 items-center"
       >
         <Input className="p-3 text-2xl" placeholder="WAS?" id="spending" />

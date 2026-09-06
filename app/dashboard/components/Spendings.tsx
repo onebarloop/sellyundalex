@@ -19,6 +19,7 @@ import { toMonth } from '@/src/lib/utils';
 import {
   useQueryClient,
   useInfiniteQuery,
+  useMutation,
   type InfiniteData,
 } from '@tanstack/react-query';
 
@@ -110,12 +111,12 @@ function Spending({
     setShowDeleteDialog(!showDeleteDialog);
   };
 
-  const handleDelete = async () => {
-    await remove(spending);
-    await queryClient.invalidateQueries({
-      queryKey: ['spendings'],
-    });
-  };
+  const { mutate } = useMutation({
+    mutationFn: () => remove(spending),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['spendings'] });
+    },
+  });
 
   return (
     <motion.li
@@ -146,7 +147,7 @@ function Spending({
             show={showDeleteDialog}
           >
             <Button
-              onClick={handleDelete}
+              onClick={mutate}
               className="border-3 gap-4 py-3 rounded-xl mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
             >
               <ShieldAlert size={40} />
