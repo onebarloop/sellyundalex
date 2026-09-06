@@ -17,7 +17,6 @@ const spendingsWithSpender = async (cursor?: SpendingCursor) => {
         },
       },
     },
-
     where: cursor
       ? {
           OR: [

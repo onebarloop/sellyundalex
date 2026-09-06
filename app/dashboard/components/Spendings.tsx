@@ -5,7 +5,7 @@ import type { Spending, User } from '@/src/db/schema';
 import { AnimatePresence, motion } from 'motion/react';
 import { Trash2, ShieldAlert, Calendar } from 'lucide-react';
 import { useState } from 'react';
-import { toCurrency } from '@/src/lib/utils';
+import { toCurrency, sortByMonth } from '@/src/lib/utils';
 import Popup from '@/src/components/Popup';
 import Button from '@/src/components/Button';
 import UpdateForm from './UpdateForm';
@@ -34,6 +34,7 @@ export default function Spendings({ spendings, userName }: Props) {
     pageParam: SpendingCursor | undefined;
   }): Promise<SpendingPage> => {
     const params = new URLSearchParams();
+
     if (pageParam) {
       params.set('date', pageParam.date);
       params.set('id', String(pageParam.id));
@@ -59,34 +60,13 @@ export default function Spendings({ spendings, userName }: Props) {
         pages: [spendings],
         pageParams: [undefined],
       },
+      staleTime: Infinity,
       getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     });
 
-  const byMonth = Object.values(
-    data.pages
-      .flatMap((page) => page.items)
-      .reduce(
-        (acc, spending) => {
-          const date = new Date(spending.spendingDate);
-          const key = date.toISOString().slice(0, 7);
-
-          if (!acc[key]) {
-            acc[key] = {
-              month: key,
-              items: [],
-            };
-          }
-
-          acc[key].items.push(spending);
-          return acc;
-        },
-        {} as Record<string, { month: string; items: SpendingWithSpender }>,
-      ),
-  );
-
   return (
     <div className="relative">
-      {byMonth.map(({ month, items }) => (
+      {sortByMonth(data.pages).map(({ month, items }) => (
         <ul className="flex flex-col gap-2" key={month}>
           <h3 className="font-bold pb-4 sticky w-full bg-background top-33">
             {toMonth(month)}

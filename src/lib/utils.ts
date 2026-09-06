@@ -1,3 +1,4 @@
+import { SpendingWithSpender, SpendingPage } from '../db/queries';
 import { User } from '../db/schema';
 
 export function toCurrency(amount: number) {
@@ -20,4 +21,28 @@ export function toCents(value: FormDataEntryValue | null) {
   }
 
   return Math.round(numericValue * 100);
+}
+
+export function sortByMonth(pages: SpendingPage[]) {
+  return Object.values(
+    pages
+      .flatMap((page) => page.items)
+      .reduce(
+        (acc, spending) => {
+          const date = new Date(spending.spendingDate);
+          const key = date.toISOString().slice(0, 7);
+
+          if (!acc[key]) {
+            acc[key] = {
+              month: key,
+              items: [],
+            };
+          }
+
+          acc[key].items.push(spending);
+          return acc;
+        },
+        {} as Record<string, { month: string; items: SpendingWithSpender }>,
+      ),
+  );
 }
