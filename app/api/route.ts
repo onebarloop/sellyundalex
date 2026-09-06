@@ -5,17 +5,24 @@ import { type NextRequest } from 'next/server';
 export async function GET(request: NextRequest): Promise<Response> {
   await verifySession();
 
-  const pageParam = request.nextUrl.searchParams.get('page');
-  const page = Number(pageParam);
+  const date = request.nextUrl.searchParams.get('date');
+  const idParam = request.nextUrl.searchParams.get('id');
+  const id = idParam === null ? undefined : Number(idParam);
 
-  if (!Number.isInteger(page) || page < 1) {
+  if (
+    (date === null) !== (id === undefined) ||
+    (date !== null && !/^\d{4}-\d{2}-\d{2}$/.test(date)) ||
+    (id !== undefined && (!Number.isInteger(id) || id < 1))
+  ) {
     return Response.json(
-      { error: 'page must be a positive integer' },
+      { error: 'date and id must be provided together and be valid' },
       { status: 400 },
     );
   }
 
-  const data = await spendingsWithSpender(Number(page));
+  const data = await spendingsWithSpender(
+    date !== null && id !== undefined ? { date, id } : undefined,
+  );
 
   return Response.json(data);
 }

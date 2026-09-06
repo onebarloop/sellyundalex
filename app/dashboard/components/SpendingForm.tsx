@@ -6,10 +6,7 @@ import Button from '@/src/components/Button';
 import RadioGroup from '@/src/components/RadioGroup';
 import { HandCoins, SavePlus } from 'lucide-react';
 import Popup from '@/src/components/Popup';
-import { useQueryClient, type InfiniteData } from '@tanstack/react-query';
-import type { SpendingWithSpender } from '@/src/db/queries';
-
-type SpendingsQueryData = InfiniteData<SpendingWithSpender, number>;
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function SpendingForm() {
   const queryClient = useQueryClient();

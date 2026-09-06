@@ -10,7 +10,11 @@ import Popup from '@/src/components/Popup';
 import Button from '@/src/components/Button';
 import UpdateForm from './UpdateForm';
 import { getSpendingIcon } from '@/src/lib/spendingIcons';
-import { SpendingWithSpender } from '@/src/db/queries';
+import {
+  SpendingCursor,
+  SpendingPage,
+  SpendingWithSpender,
+} from '@/src/db/queries';
 import { toMonth } from '@/src/lib/utils';
 import {
   useQueryClient,
@@ -19,7 +23,7 @@ import {
 } from '@tanstack/react-query';
 
 type Props = {
-  spendings: SpendingWithSpender;
+  spendings: SpendingPage;
   userName: User['name'];
 };
 
@@ -27,50 +31,57 @@ export default function Spendings({ spendings, userName }: Props) {
   const getSpendings = async ({
     pageParam,
   }: {
-    pageParam: number;
-  }): Promise<SpendingWithSpender> => {
-    const res = await fetch(`/api?page=${pageParam}`);
+    pageParam: SpendingCursor | undefined;
+  }): Promise<SpendingPage> => {
+    const params = new URLSearchParams();
+    if (pageParam) {
+      params.set('date', pageParam.date);
+      params.set('id', String(pageParam.id));
+    }
+
+    const res = await fetch(`/api?${params}`);
     const data = await res.json();
     return data;
   };
 
   const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
     useInfiniteQuery<
-      SpendingWithSpender,
+      SpendingPage,
       Error,
-      InfiniteData<SpendingWithSpender, number>,
+      InfiniteData<SpendingPage, SpendingCursor | undefined>,
       ['spendings'],
-      number
+      SpendingCursor | undefined
     >({
       queryKey: ['spendings'],
       queryFn: getSpendings,
-      initialPageParam: 1,
+      initialPageParam: undefined,
       initialData: {
         pages: [spendings],
-        pageParams: [1],
+        pageParams: [undefined],
       },
-      getNextPageParam: (lastPage, _, lastPageParam) =>
-        lastPage.length === 0 ? undefined : lastPageParam + 1,
+      getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     });
 
   const byMonth = Object.values(
-    data.pages.flat().reduce(
-      (acc, spending) => {
-        const date = new Date(spending.spendingDate);
-        const key = date.toISOString().slice(0, 7);
+    data.pages
+      .flatMap((page) => page.items)
+      .reduce(
+        (acc, spending) => {
+          const date = new Date(spending.spendingDate);
+          const key = date.toISOString().slice(0, 7);
 
-        if (!acc[key]) {
-          acc[key] = {
-            month: key,
-            items: [],
-          };
-        }
+          if (!acc[key]) {
+            acc[key] = {
+              month: key,
+              items: [],
+            };
+          }
 
-        acc[key].items.push(spending);
-        return acc;
-      },
-      {} as Record<string, { month: string; items: typeof spendings }>,
-    ),
+          acc[key].items.push(spending);
+          return acc;
+        },
+        {} as Record<string, { month: string; items: SpendingWithSpender }>,
+      ),
   );
 
   return (

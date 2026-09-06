@@ -5,7 +5,8 @@ import Button from '@/src/components/Button';
 import { CloudSync, Settings } from 'lucide-react';
 import { useState } from 'react';
 import RadioGroup from '@/src/components/RadioGroup';
-import { SpendingWithSpender } from '@/src/db/queries';
+import type { SpendingWithSpender } from '@/src/db/queries';
+import { useQueryClient } from '@tanstack/react-query';
 
 type Props = {
   spending: SpendingWithSpender[number];
@@ -14,11 +15,16 @@ type Props = {
 
 export default function UpdateForm({ spending, userName }: Props) {
   const [showConfigDialog, setShowConfigDialog] = useState(false);
+  const queryClient = useQueryClient();
 
-  const handleSubmit = (formData: FormData) => {
+  const handleSubmit = async (formData: FormData) => {
     setShowConfigDialog(false);
-    update(formData);
+    await update(formData);
+    await queryClient.invalidateQueries({
+      queryKey: ['spendings'],
+    });
   };
+
   return (
     <Popup
       trigger={

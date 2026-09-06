@@ -1,15 +1,14 @@
 import 'server-only';
 
 import { db } from '@/src/db/db';
-import { sum, sql, desc, eq } from 'drizzle-orm';
+import { sum, sql, desc, eq, EmptyFilter } from 'drizzle-orm';
 import { spendings, users } from '@/src/db/schema';
 
 const PAGE_SIZE = 5;
+type SpendingCursor = { date: string; id: number };
 
-const spendingsWithSpender = async (page: number = 1) => {
-  const offset = (page - 1) * PAGE_SIZE;
-
-  return db.query.spendings.findMany({
+const spendingsWithSpender = async (cursor?: SpendingCursor) => {
+  const rows = await db.query.spendings.findMany({
     with: {
       spender: {
         columns: {
@@ -18,16 +17,53 @@ const spendingsWithSpender = async (page: number = 1) => {
         },
       },
     },
+
+    where: cursor
+      ? {
+          OR: [
+            {
+              RAW: (table) => sql`DATE(${table.spendingDate}) < ${cursor.date}`,
+            },
+            {
+              AND: [
+                {
+                  RAW: (table) =>
+                    sql`DATE(${table.spendingDate}) = ${cursor.date}`,
+                },
+                {
+                  RAW: (table) => sql`${table.id} < ${cursor.id}`,
+                },
+              ],
+            },
+          ],
+        }
+      : EmptyFilter,
+
     orderBy: (fields, { desc }) => [
       desc(sql`DATE(${fields.spendingDate})`),
       desc(fields.id),
     ],
-    limit: PAGE_SIZE,
-    offset,
+    limit: PAGE_SIZE + 1,
   });
+
+  const hasNextPage = rows.length > PAGE_SIZE;
+  const items = rows.slice(0, PAGE_SIZE);
+  const lastItem = items.at(-1);
+
+  return {
+    items,
+    nextCursor:
+      hasNextPage && lastItem
+        ? {
+            date: new Date(lastItem.spendingDate).toISOString().slice(0, 10),
+            id: lastItem.id,
+          }
+        : null,
+  };
 };
 
-type SpendingWithSpender = Awaited<ReturnType<typeof spendingsWithSpender>>;
+type SpendingPage = Awaited<ReturnType<typeof spendingsWithSpender>>;
+type SpendingWithSpender = SpendingPage['items'];
 
 const totalsPerMonth = async () => {
   const total = await db
@@ -88,6 +124,8 @@ type TotalsAndUsersPerMonth = Awaited<
 export { spendingsWithSpender, totalsAndUsersPerMonth };
 
 export type {
+  SpendingCursor,
+  SpendingPage,
   SpendingWithSpender,
   TotalsPerMonth,
   UsersPerMonth,
