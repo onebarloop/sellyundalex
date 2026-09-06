@@ -35,15 +35,15 @@ export default function App(props: Props) {
 }
 
 function Spendings({ spendings, userName }: Props) {
-  async function getSpendings() {
-    const res = await fetch('/api');
+  const getSpendings = async ({ pageParam }: { pageParam: number }) => {
+    const res = await fetch(`/api?page=${pageParam}`);
     const data = await res.json();
     return data;
-  }
+  };
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['todos'],
-    queryFn: getSpendings,
+    queryFn: () => getSpendings({ pageParam: 1 }),
   });
 
   const byMonth = Object.values(

@@ -4,17 +4,22 @@ import { db } from '@/src/db/db';
 import { sum, sql, desc, eq } from 'drizzle-orm';
 import { spendings, users } from '@/src/db/schema';
 
-const spendingsWithSpender = async (offset: number = 0) =>
-  await db.query.spendings.findMany({
+const PAGE_SIZE = 5;
+
+const spendingsWithSpender = async (page: number = 1) => {
+  const offset = (page - 1) * PAGE_SIZE;
+
+  return db.query.spendings.findMany({
     with: {
       spender: true,
     },
     orderBy: {
       spendingDate: 'desc',
     },
-    limit: 10,
+    limit: PAGE_SIZE,
     offset,
   });
+};
 
 type SpendingWithSpender = Awaited<ReturnType<typeof spendingsWithSpender>>;
 
