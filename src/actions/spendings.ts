@@ -18,16 +18,38 @@ export async function add(formData: FormData) {
     'spending-type',
   ) as (typeof spendingTypeEnum.enumValues)[number];
 
-  const fixed = toCents(amount);
+  const [created] = await db
+    .insert(spendings)
+    .values({
+      title: String(spending),
+      amount: toCents(amount),
+      spenderId: userId,
+      spendingType,
+    })
+    .returning();
 
-  await db.insert(spendings).values({
-    title: String(spending),
-    amount: fixed,
-    spenderId: userId,
-    spendingType: spendingType,
+  if (!created) {
+    throw new Error('Could not create spending');
+  }
+
+  const createdWithSpender = await db.query.spendings.findFirst({
+    where: {
+      id: {
+        eq: created.id,
+      },
+    },
+    with: {
+      spender: true,
+    },
   });
 
-  revalidatePath('/');
+  if (!createdWithSpender) {
+    throw new Error('Could not load created spending');
+  }
+
+  revalidatePath('/dashboard');
+
+  return createdWithSpender;
 }
 
 export async function update(formData: FormData) {

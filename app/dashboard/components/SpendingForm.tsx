@@ -6,13 +6,26 @@ import Button from '@/src/components/Button';
 import RadioGroup from '@/src/components/RadioGroup';
 import { HandCoins, SavePlus } from 'lucide-react';
 import Popup from '@/src/components/Popup';
+import { useQueryClient, type InfiniteData } from '@tanstack/react-query';
+import type { SpendingWithSpender } from '@/src/db/queries';
+
+type SpendingsQueryData = InfiniteData<SpendingWithSpender, number>;
 
 export default function SpendingForm() {
+  const queryClient = useQueryClient();
+
   const [show, setShow] = useState(false);
 
-  const handleSubmit = (formData: FormData) => {
+  const handleSubmit = async (formData: FormData) => {
+    const createdSpending = await add(formData);
+
+    if (createdSpending) {
+      await queryClient.invalidateQueries({
+        queryKey: ['spendings'],
+      });
+    }
+
     setShow(false);
-    add(formData);
   };
 
   return (

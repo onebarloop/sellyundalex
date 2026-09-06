@@ -2,7 +2,7 @@ import { verifySession } from '@/src/lib/session';
 import { spendingsWithSpender } from '@/src/db/queries';
 import { type NextRequest } from 'next/server';
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<Response> {
   await verifySession();
 
   const pageParam = request.nextUrl.searchParams.get('page');

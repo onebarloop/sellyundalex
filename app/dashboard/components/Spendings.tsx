@@ -16,8 +16,10 @@ import {
   useQuery,
   useMutation,
   useQueryClient,
+  useInfiniteQuery,
   QueryClient,
   QueryClientProvider,
+  type InfiniteData,
 } from '@tanstack/react-query';
 
 type Props = {
@@ -25,45 +27,55 @@ type Props = {
   userName: User['name'];
 };
 
-export default function App(props: Props) {
-  const queryClient = new QueryClient();
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Spendings {...props} />
-    </QueryClientProvider>
-  );
-}
-
-function Spendings({ spendings, userName }: Props) {
-  const getSpendings = async ({ pageParam }: { pageParam: number }) => {
+export default function Spendings({ spendings, userName }: Props) {
+  const getSpendings = async ({
+    pageParam,
+  }: {
+    pageParam: number;
+  }): Promise<SpendingWithSpender> => {
     const res = await fetch(`/api?page=${pageParam}`);
     const data = await res.json();
     return data;
   };
 
-  const { isPending, isError, data, error } = useQuery({
-    queryKey: ['todos'],
-    queryFn: () => getSpendings({ pageParam: 1 }),
-  });
+  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
+    useInfiniteQuery<
+      SpendingWithSpender,
+      Error,
+      InfiniteData<SpendingWithSpender, number>,
+      ['spendings'],
+      number
+    >({
+      queryKey: ['spendings'],
+      queryFn: getSpendings,
+      initialPageParam: 1,
+      initialData: {
+        pages: [spendings],
+        pageParams: [1],
+      },
+      getNextPageParam: (lastPage, _, lastPageParam) =>
+        lastPage.length === 0 ? undefined : lastPageParam + 1,
+    });
 
   const byMonth = Object.values(
-    spendings.reduce(
+    data.pages.flat().reduce(
       (acc, spending) => {
-        const key = spending.spendingDate.toISOString().slice(0, 7); // YYYY-MM
+        const date = new Date(spending.spendingDate);
+        const key = date.toISOString().slice(0, 7);
+
         if (!acc[key]) {
           acc[key] = {
             month: key,
             items: [],
           };
         }
+
         acc[key].items.push(spending);
         return acc;
       },
       {} as Record<string, { month: string; items: typeof spendings }>,
     ),
   );
-
-  console.log(data);
 
   return (
     <div className="relative">
@@ -83,6 +95,16 @@ function Spendings({ spendings, userName }: Props) {
           </AnimatePresence>
         </ul>
       ))}
+      <button
+        onClick={() => fetchNextPage()}
+        disabled={!hasNextPage || isFetching}
+      >
+        {isFetchingNextPage
+          ? 'Loading more...'
+          : hasNextPage
+            ? 'Load More'
+            : 'Nothing more to load'}
+      </button>
     </div>
   );
 }
@@ -95,9 +117,17 @@ function Spending({
   userName: User['name'];
 }) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleClick = () => {
     setShowDeleteDialog(!showDeleteDialog);
+  };
+
+  const handleDelete = async () => {
+    await remove(spending);
+    await queryClient.invalidateQueries({
+      queryKey: ['spendings'],
+    });
   };
 
   return (
@@ -129,7 +159,7 @@ function Spending({
             show={showDeleteDialog}
           >
             <Button
-              onClick={async () => await remove(spending)}
+              onClick={handleDelete}
               className="border-3 gap-4 py-3 rounded-xl mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
             >
               <ShieldAlert size={40} />
@@ -142,7 +172,7 @@ function Spending({
         <span className="">{toCurrency(spending.amount)}</span>
         <span className="inline-flex items-center gap-1">
           <Calendar className="" size={14} />
-          {spending.spendingDate.toLocaleDateString('de-DE', {
+          {new Date(spending.spendingDate).toLocaleDateString('de-DE', {
             day: 'numeric',
             month: 'short',
           })}

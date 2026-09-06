@@ -1,5 +1,6 @@
 import SpendingForm from './components/SpendingForm';
 import Header from './components/Header';
+import Providers from './components/Providers';
 
 export default async function Layout({
   children,
@@ -7,10 +8,10 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <Providers>
       <Header />
       {children}
       <SpendingForm />
-    </>
+    </Providers>
   );
 }
