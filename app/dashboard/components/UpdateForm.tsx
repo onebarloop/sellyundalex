@@ -54,7 +54,7 @@ export default function UpdateForm({ spending, userName }: Props) {
         />
 
         <Input
-          className="p-3 text-2xl w-full"
+          className="p-3 text-2xl w-full block"
           type="date"
           id="date"
           name="date"
