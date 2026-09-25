@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="flex flex-wrap gap-12 justify-center items-center flex-1">
+    <div className="flex flex-1 flex-wrap items-center justify-center gap-12">
       <span className="text-2xl font-bold">Selly</span>
       <Link href="/login">
         <Heart className="animate-beat fill-alex shrink-0" size={42} />

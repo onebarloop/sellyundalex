@@ -28,7 +28,7 @@ export default function Input({
       step={step}
       autoComplete={autocomplete}
       defaultValue={defaultValue}
-      className={`${className} bg-rose-100 text-foreground p-1 rounded-md outline-foreground `}
+      className={`${className} text-foreground outline-foreground rounded-md bg-rose-100 p-1`}
     />
   );
 }

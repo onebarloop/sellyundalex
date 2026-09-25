@@ -20,7 +20,7 @@ export default function SpendingForm() {
       trigger={
         <Button
           onClick={() => setShow(true)}
-          className="bg-rose-400 border-3 fixed bottom-6 right-6 rounded-md"
+          className="fixed right-6 bottom-6 rounded-md border-3 bg-rose-400"
         >
           <HandCoins size={40} />
         </Button>
@@ -31,7 +31,7 @@ export default function SpendingForm() {
       <form
         onClick={(e) => e.stopPropagation()}
         action={handleSubmit}
-        className="flex flex-col gap-2 items-center"
+        className="flex flex-col items-center gap-2"
       >
         <Input className="p-3 text-2xl" placeholder="WAS?" id="spending" />
         <Input
@@ -43,7 +43,7 @@ export default function SpendingForm() {
         />
         <RadioGroup />
         <Button
-          className="border-3 justify-between py-3 rounded-md w-full self-end mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
+          className="text-foreground border-foreground mt-8 flex w-full items-center justify-between self-end rounded-md border-3 bg-rose-400 py-3 text-3xl font-bold"
           type="submit"
         >
           <span>Speichern</span>

@@ -19,7 +19,7 @@ export default function MonthlyExpenses({
 }) {
   return (
     <Swiper
-      className="w-full h-full"
+      className="h-full w-full"
       slidesPerView={1}
       spaceBetween={50}
       modules={[Pagination]}
@@ -141,11 +141,11 @@ function Month({ month }: { month: TotalsAndUsersPerMonth[number] }) {
       <motion.h2
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-bold mb-6"
+        className="mb-6 font-bold"
       >
         Ausgaben im {toMonth(month.month)}
       </motion.h2>
-      <div className="w-full aspect-square">
+      <div className="aspect-square w-full">
         <canvas ref={canvasRef}></canvas>
       </div>
     </div>

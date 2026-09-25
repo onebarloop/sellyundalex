@@ -40,7 +40,7 @@ export default function Spendings({ spendings, userName }: Props) {
     <div className="relative">
       {byMonth.map(({ month, items }) => (
         <ul className="flex flex-col gap-2" key={month}>
-          <h3 className="font-bold pb-4 sticky w-full bg-background top-33">
+          <h3 className="bg-background sticky top-33 w-full pb-4 font-bold">
             {toMonth(month)}
           </h3>
           <AnimatePresence initial={false}>
@@ -79,7 +79,7 @@ function Spending({
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
     >
-      <div className="p-2 gap-2  font-bold bg-mauve-300 flex justify-between items-center">
+      <div className="flex items-center justify-between gap-2 bg-mauve-300 p-2 font-bold">
         <span className="inline-flex items-center gap-2">
           {getSpendingIcon(spending.spendingType, 18)}
         </span>
@@ -101,7 +101,7 @@ function Spending({
           >
             <Button
               onClick={async () => await remove(spending)}
-              className="border-3 gap-4 py-3 rounded-md mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
+              className="text-foreground border-foreground mt-8 flex items-center gap-4 rounded-md border-3 bg-rose-400 py-3 text-3xl font-bold"
             >
               <ShieldAlert size={40} />
               <span>Sicher?</span>
@@ -109,7 +109,7 @@ function Spending({
           </Popup>
         </div>
       </div>
-      <div className="p-2 text-foreground bg-mauve-200 text-xs flex justify-between">
+      <div className="text-foreground flex justify-between bg-mauve-200 p-2 text-xs">
         <span className="">{toCurrency(spending.amount)}</span>
         <span className="inline-flex items-center gap-1">
           <Calendar className="" size={14} />

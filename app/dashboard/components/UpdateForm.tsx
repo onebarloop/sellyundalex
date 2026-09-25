@@ -36,16 +36,16 @@ export default function UpdateForm({ spending, userName }: Props) {
       <form
         onClick={(e) => e.stopPropagation()}
         action={handleSubmit}
-        className="flex flex-col gap-2 items-center"
+        className="flex flex-col items-center gap-2"
       >
         <Input
-          className="p-3 text-2xl w-full"
+          className="w-full p-3 text-2xl"
           placeholder="WAS?"
           id="spending"
           defaultValue={spending.title}
         />
         <Input
-          className="p-3 text-2xl w-full"
+          className="w-full p-3 text-2xl"
           placeholder="WIEVIEL?"
           type="number"
           step="0.01"
@@ -54,7 +54,7 @@ export default function UpdateForm({ spending, userName }: Props) {
         />
 
         <Input
-          className="p-3 text-2xl w-full block"
+          className="block w-full p-3 text-2xl"
           type="date"
           id="date"
           name="date"
@@ -72,7 +72,7 @@ export default function UpdateForm({ spending, userName }: Props) {
           value={spending.id}
         />
         <Button
-          className="border-3 justify-between py-3 rounded-md w-full self-end mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
+          className="text-foreground border-foreground mt-8 flex w-full items-center justify-between self-end rounded-md border-3 bg-rose-400 py-3 text-3xl font-bold"
           type="submit"
         >
           <span>Update</span>

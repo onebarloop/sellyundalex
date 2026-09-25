@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "format": "prettier .",
+    "format": "prettier . --write",
     "typecheck": "tsc --noEmit",
     "start:prod": "docker compose -f docker-compose.prod.yml up -d --build --force-recreate",
     "seed:prod": "node db-scripts.js --seed",

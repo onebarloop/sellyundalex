@@ -6,29 +6,29 @@ export default function Nav() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 py-5 bg-background text-sm">
-      <nav className="flex justify-between  ">
+    <header className="bg-background sticky top-0 py-5 text-sm">
+      <nav className="flex justify-between">
         <Link
-          className={`link ${pathname === '/dashboard' ? 'underline ' : ''}`}
+          className={`link ${pathname === '/dashboard' ? 'underline' : ''}`}
           href="/dashboard"
         >
           Ausgaben
         </Link>
 
         <Link
-          className={`link ${pathname === '/dashboard/monatlich' ? 'underline   ' : ''}`}
+          className={`link ${pathname === '/dashboard/monatlich' ? 'underline' : ''}`}
           href="/dashboard/monatlich"
         >
           Monatlich
         </Link>
         <Link
-          className={`link ${pathname === '/dashboard/statistik' ? 'underline   ' : ''}`}
+          className={`link ${pathname === '/dashboard/statistik' ? 'underline' : ''}`}
           href="/dashboard/statistik"
         >
           Statistik
         </Link>
         <Link
-          className={`link ${pathname === '/dashboard/abrechnung' ? 'underline  ' : ''}`}
+          className={`link ${pathname === '/dashboard/abrechnung' ? 'underline' : ''}`}
           href="/dashboard/abrechnung"
         >
           Abrechnung

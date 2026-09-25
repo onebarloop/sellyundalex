@@ -5,7 +5,7 @@ export default async function Page() {
   await verifySession();
   return (
     <div>
-      <h1 className="font-bold mb-2">Settings</h1>
+      <h1 className="mb-2 font-bold">Settings</h1>
       <SettingsForm />
     </div>
   );

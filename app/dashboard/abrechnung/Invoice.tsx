@@ -15,9 +15,9 @@ export default function Invoice({
 
   return (
     <li>
-      <h2 className="font-bold mb-2">{toMonth(month.month)}</h2>
+      <h2 className="mb-2 font-bold">{toMonth(month.month)}</h2>
       <div
-        className={`grid grid-cols-3 p-3 border-b-8 ${debtor.name === 'Alex' ? 'border-alex' : 'border-selly'} items-center bg-mauve-300 rounded-md`}
+        className={`grid grid-cols-3 border-b-8 p-3 ${debtor.name === 'Alex' ? 'border-alex' : 'border-selly'} items-center rounded-md bg-mauve-300`}
       >
         <span>{debtor.name}</span>
         <span className="justify-self-center underline">

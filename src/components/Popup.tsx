@@ -15,7 +15,7 @@ export default function Popup({ trigger, children, show, onClick }: Props) {
       <AnimatePresence>
         {show && (
           <div
-            className="w-dvw h-dvh top-0 left-0 flex items-center justify-center fixed z-50 "
+            className="fixed top-0 left-0 z-50 flex h-dvh w-dvw items-center justify-center"
             onClick={onClick}
           >
             <motion.div
@@ -27,7 +27,7 @@ export default function Popup({ trigger, children, show, onClick }: Props) {
               {children}
             </motion.div>
             <motion.div
-              className="bg-black/20 backdrop-blur-sm absolute inset-0 z-0"
+              className="absolute inset-0 z-0 bg-black/20 backdrop-blur-sm"
               exit={{ opacity: 0 }}
             />
           </div>
