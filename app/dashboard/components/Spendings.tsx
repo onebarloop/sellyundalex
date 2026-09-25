@@ -73,7 +73,6 @@ function Spending({
 
   return (
     <motion.li
-      layout="position"
       className={`border-l-8 ${spending.spender?.name === 'Alex' ? 'border-l-alex' : 'border-l-selly'} flex flex-col rounded-md last:mb-6`}
       exit={{ opacity: 0, scale: 0 }}
       initial={{ opacity: 0, scale: 0 }}
