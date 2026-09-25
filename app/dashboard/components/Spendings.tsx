@@ -74,7 +74,7 @@ function Spending({
   return (
     <motion.li
       layout="position"
-      className={`border-l-8 ${spending.spender?.name === 'Alex' ? 'border-l-alex' : 'border-l-selly'} flex flex-col rounded-lg last:mb-6`}
+      className={`border-l-8 ${spending.spender?.name === 'Alex' ? 'border-l-alex' : 'border-l-selly'} flex flex-col rounded-md last:mb-6`}
       exit={{ opacity: 0, scale: 0 }}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -101,7 +101,7 @@ function Spending({
           >
             <Button
               onClick={async () => await remove(spending)}
-              className="border-3 gap-4 py-3 rounded-xl mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
+              className="border-3 gap-4 py-3 rounded-md mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
             >
               <ShieldAlert size={40} />
               <span>Sicher?</span>

@@ -20,7 +20,7 @@ export default function SpendingForm() {
       trigger={
         <Button
           onClick={() => setShow(true)}
-          className="bg-rose-400 border-3 fixed bottom-6 right-6"
+          className="bg-rose-400 border-3 fixed bottom-6 right-6 rounded-md"
         >
           <HandCoins size={40} />
         </Button>
@@ -43,7 +43,7 @@ export default function SpendingForm() {
         />
         <RadioGroup />
         <Button
-          className="border-3 justify-between py-3 rounded-xl w-full self-end mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
+          className="border-3 justify-between py-3 rounded-md w-full self-end mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
           type="submit"
         >
           <span>Speichern</span>

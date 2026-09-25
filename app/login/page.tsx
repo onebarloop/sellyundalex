@@ -19,7 +19,7 @@ export default function LoginPage() {
           <Input className="text-lg p-2" id="password" type="password" />
 
           <Button
-            className="border-3 justify-between rounded-lg bg-rose-400 text-foreground border-foreground flex text-lg  font-bold items-center"
+            className="border-3 justify-between rounded bg-rose-400 text-foreground border-foreground flex text-lg  font-bold items-center"
             type="submit"
             disabled={isPending}
           >

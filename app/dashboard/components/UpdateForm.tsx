@@ -72,7 +72,7 @@ export default function UpdateForm({ spending, userName }: Props) {
           value={spending.id}
         />
         <Button
-          className="border-3 justify-between py-3 rounded-xl w-full self-end mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
+          className="border-3 justify-between py-3 rounded-md w-full self-end mt-8 bg-rose-400 text-foreground border-foreground flex text-3xl font-bold items-center"
           type="submit"
         >
           <span>Update</span>
