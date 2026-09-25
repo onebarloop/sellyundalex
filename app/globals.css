@@ -46,3 +46,25 @@ body {
 }
 
 @source inline('bg-alex', 'bg-selly');
+
+@keyframes slide-out {
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+::view-transition-old(.dashboard-page) {
+  animation: 100ms ease both slide-out;
+}
+
+::view-transition-new(.dashboard-page) {
+  animation: 300ms 100ms ease both slide-in;
+}

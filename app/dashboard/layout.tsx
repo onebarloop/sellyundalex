@@ -1,5 +1,6 @@
 import SpendingForm from './components/SpendingForm';
 import Header from './components/Header';
+import { ViewTransition } from 'react';
 
 export default async function Layout({
   children,
@@ -9,7 +10,9 @@ export default async function Layout({
   return (
     <>
       <Header />
-      {children}
+      <ViewTransition default="none" update="dashboard-page">
+        {children}
+      </ViewTransition>
       <SpendingForm />
     </>
   );
