@@ -1,7 +1,6 @@
 'use client';
 
 import { toCurrency, toMonth } from '@/src/lib/utils';
-import { motion } from 'motion/react';
 import { type TotalsAndUsersPerMonth } from '@/src/db/queries';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
@@ -138,13 +137,7 @@ function Month({ month }: { month: TotalsAndUsersPerMonth[number] }) {
 
   return (
     <div className="">
-      <motion.h2
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="mb-6 font-bold"
-      >
-        Ausgaben im {toMonth(month.month)}
-      </motion.h2>
+      <h2 className="mb-6 font-bold">Ausgaben im {toMonth(month.month)}</h2>
       <div className="aspect-square w-full">
         <canvas ref={canvasRef}></canvas>
       </div>
