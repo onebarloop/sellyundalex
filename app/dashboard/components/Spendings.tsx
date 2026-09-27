@@ -77,6 +77,7 @@ function Spending({
       exit={{ opacity: 0, scale: 0 }}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
+      layout
     >
       <div className="flex items-center justify-between gap-2 bg-mauve-300 p-2 font-bold">
         <span className="inline-flex items-center gap-2">
