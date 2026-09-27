@@ -11,6 +11,7 @@ export default function Nav() {
         <Link
           className={`link ${pathname === '/dashboard' ? 'underline' : ''}`}
           href="/dashboard"
+          transitionTypes={['dashboard-page']}
         >
           Ausgaben
         </Link>
@@ -18,18 +19,21 @@ export default function Nav() {
         <Link
           className={`link ${pathname === '/dashboard/monatlich' ? 'underline' : ''}`}
           href="/dashboard/monatlich"
+          transitionTypes={['dashboard-page']}
         >
           Monatlich
         </Link>
         <Link
           className={`link ${pathname === '/dashboard/statistik' ? 'underline' : ''}`}
           href="/dashboard/statistik"
+          transitionTypes={['dashboard-page']}
         >
           Statistik
         </Link>
         <Link
           className={`link ${pathname === '/dashboard/abrechnung' ? 'underline' : ''}`}
           href="/dashboard/abrechnung"
+          transitionTypes={['dashboard-page']}
         >
           Abrechnung
         </Link>

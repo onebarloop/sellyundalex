@@ -1,7 +1,7 @@
 'use client';
 import { add } from '@/src/actions/spendings';
 import Input from '@/src/components/Input';
-import { useState, startTransition, addTransitionType } from 'react';
+import { useState } from 'react';
 import Button from '@/src/components/Button';
 import RadioGroup from '@/src/components/RadioGroup';
 import { HandCoins, SavePlus } from 'lucide-react';
@@ -11,11 +11,8 @@ export default function SpendingForm() {
   const [show, setShow] = useState(false);
 
   const handleSubmit = (formData: FormData) => {
-    startTransition(() => {
-      addTransitionType('spending-update');
-      add(formData);
-      setShow(false);
-    });
+    add(formData);
+    setShow(false);
   };
 
   return (

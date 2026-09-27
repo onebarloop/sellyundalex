@@ -14,6 +14,7 @@ export default async function Header() {
         <Link
           className="text-foreground/50 flex items-center gap-1"
           href="/dashboard/settings"
+          transitionTypes={['dashboard-page']}
         >
           <span className="text-sm">Hallo {username}</span>
           <Settings size={16} />

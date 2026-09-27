@@ -12,11 +12,7 @@ export default async function Layout({
       <Header />
       <ViewTransition
         default="none"
-        update={{
-          'spending-update': 'none',
-          'settings-update': 'none',
-          default: 'dashboard-page',
-        }}
+        update={{ 'dashboard-page': 'dashboard-page', default: 'none' }}
       >
         <main className="overflow-auto px-4">{children}</main>
       </ViewTransition>

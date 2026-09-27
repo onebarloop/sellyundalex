@@ -3,7 +3,7 @@ import Popup from '@/src/components/Popup';
 import Input from '@/src/components/Input';
 import Button from '@/src/components/Button';
 import { CloudSync, Settings } from 'lucide-react';
-import { useState, startTransition, addTransitionType } from 'react';
+import { useState } from 'react';
 import RadioGroup from '@/src/components/RadioGroup';
 import { SpendingWithSpender } from '@/src/db/queries';
 
@@ -16,11 +16,8 @@ export default function UpdateForm({ spending, userName }: Props) {
   const [showConfigDialog, setShowConfigDialog] = useState(false);
 
   const handleSubmit = (formData: FormData) => {
-    startTransition(() => {
-      addTransitionType('spending-update');
-      setShowConfigDialog(false);
-      update(formData);
-    });
+    setShowConfigDialog(false);
+    update(formData);
   };
   return (
     <Popup

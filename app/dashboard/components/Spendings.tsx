@@ -4,7 +4,7 @@ import { remove } from '@/src/actions/spendings';
 import type { Spending, User } from '@/src/db/schema';
 import { AnimatePresence, motion } from 'motion/react';
 import { Trash2, ShieldAlert, Calendar } from 'lucide-react';
-import { useState, addTransitionType, startTransition } from 'react';
+import { useState } from 'react';
 import { toCurrency } from '@/src/lib/utils';
 import Popup from '@/src/components/Popup';
 import Button from '@/src/components/Button';
@@ -100,12 +100,7 @@ function Spending({
             show={showDeleteDialog}
           >
             <Button
-              onClick={() => {
-                startTransition(() => {
-                  addTransitionType('spending-update');
-                  return remove(spending);
-                });
-              }}
+              onClick={() => remove(spending)}
               className="text-foreground border-foreground mt-8 flex items-center gap-4 rounded-md border-3 bg-rose-400 py-3 text-3xl font-bold"
             >
               <ShieldAlert size={40} />

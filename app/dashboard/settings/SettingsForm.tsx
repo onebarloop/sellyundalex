@@ -3,23 +3,15 @@
 import { setPassword } from '@/src/actions/user';
 import Input from '@/src/components/Input';
 import Button from '@/src/components/Button';
-import {
-  useActionState,
-  startTransition,
-  addTransitionType,
-  useState,
-} from 'react';
+import { useActionState, useState } from 'react';
 
 export default function SettingsForm() {
   const [state, formAction, isPending] = useActionState(setPassword, undefined);
   const [inputValue, setInputValue] = useState<null | string>(null);
 
   const handleSubmit = (formData: FormData) => {
-    startTransition(() => {
-      addTransitionType('settings-update');
-      formAction(formData);
-      setInputValue(null);
-    });
+    formAction(formData);
+    setInputValue(null);
   };
 
   return (
