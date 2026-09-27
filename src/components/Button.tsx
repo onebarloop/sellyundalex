@@ -17,7 +17,7 @@ export default function Button({
 }: Props) {
   return (
     <button
-      className={`${className} ${disabled && 'opacity-30'} border-foreground w-fit rounded-md border-2 px-3 py-1`}
+      className={`${className} ${disabled && 'opacity-30'} border-foreground w-fit rounded-md border-2 px-3 py-1 font-bold`}
       onClick={onClick}
       type={type}
       disabled={disabled}

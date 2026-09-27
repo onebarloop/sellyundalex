@@ -7,6 +7,7 @@ type InputProps = {
   step?: string;
   className?: string;
   defaultValue?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export default function Input({
@@ -18,6 +19,7 @@ export default function Input({
   className,
   defaultValue,
   autocomplete,
+  onChange,
 }: InputProps) {
   return (
     <input
@@ -26,9 +28,10 @@ export default function Input({
       type={type}
       name={name}
       step={step}
+      onChange={onChange}
       autoComplete={autocomplete}
       defaultValue={defaultValue}
-      className={`${className} text-foreground outline-foreground rounded-md bg-rose-100 p-1`}
+      className={`${className} text-foreground outline-foreground rounded-md bg-rose-100 p-2`}
     />
   );
 }

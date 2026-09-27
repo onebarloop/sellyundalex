@@ -3,12 +3,29 @@
 import { setPassword } from '@/src/actions/user';
 import Input from '@/src/components/Input';
 import Button from '@/src/components/Button';
-import { useActionState } from 'react';
+import {
+  useActionState,
+  startTransition,
+  addTransitionType,
+  useState,
+} from 'react';
+
 export default function SettingsForm() {
   const [state, formAction, isPending] = useActionState(setPassword, undefined);
+  const [inputValue, setInputValue] = useState<null | string>(null);
+
+  const handleSubmit = (formData: FormData) => {
+    startTransition(() => {
+      addTransitionType('settings-update');
+      formAction(formData);
+      setInputValue(null);
+    });
+  };
+
   return (
-    <form className="flex flex-col gap-2" action={formAction}>
+    <form className="flex flex-col gap-2" action={handleSubmit}>
       <Input
+        onChange={(e) => setInputValue(e.target.value)}
         id="password"
         type="password"
         name="password"
@@ -22,7 +39,9 @@ export default function SettingsForm() {
       />
       {state?.error}
       {state?.success}
-      <Button type="submit">Submit</Button>
+      <Button className="bg-rose-400" type="submit" disabled={!inputValue}>
+        Passwort ändern
+      </Button>
     </form>
   );
 }
