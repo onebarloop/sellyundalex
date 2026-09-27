@@ -6,7 +6,7 @@ export default function Nav() {
   const pathname = usePathname();
 
   return (
-    <header className="bg-background sticky top-0 py-5 text-sm">
+    <header className="py-5 text-sm">
       <nav className="flex justify-between">
         <Link
           className={`link ${pathname === '/dashboard' ? 'underline' : ''}`}

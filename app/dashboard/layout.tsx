@@ -8,12 +8,12 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <div className="grid h-screen grid-rows-[auto_1fr] p-4">
       <Header />
       <ViewTransition default="none" update="dashboard-page">
-        {children}
+        <main className="overflow-auto">{children}</main>
       </ViewTransition>
       <SpendingForm />
-    </>
+    </div>
   );
 }

@@ -40,7 +40,7 @@ export default function Spendings({ spendings, userName }: Props) {
     <div className="relative">
       {byMonth.map(({ month, items }) => (
         <ul className="flex flex-col gap-2" key={month}>
-          <h3 className="bg-background sticky top-33 w-full pb-4 font-bold">
+          <h3 className="bg-background sticky top-0 z-10 w-full pb-4 font-bold">
             {toMonth(month)}
           </h3>
           <AnimatePresence initial={false}>
