@@ -1,7 +1,7 @@
 'use client';
 import { add } from '@/src/actions/spendings';
 import Input from '@/src/components/Input';
-import { useState } from 'react';
+import { useState, startTransition, addTransitionType } from 'react';
 import Button from '@/src/components/Button';
 import RadioGroup from '@/src/components/RadioGroup';
 import { HandCoins, SavePlus } from 'lucide-react';
@@ -11,8 +11,11 @@ export default function SpendingForm() {
   const [show, setShow] = useState(false);
 
   const handleSubmit = (formData: FormData) => {
-    setShow(false);
-    add(formData);
+    startTransition(() => {
+      addTransitionType('spending-update');
+      add(formData);
+      setShow(false);
+    });
   };
 
   return (
@@ -20,7 +23,7 @@ export default function SpendingForm() {
       trigger={
         <Button
           onClick={() => setShow(true)}
-          className="fixed right-6 bottom-6 rounded-md border-3 bg-rose-400"
+          className="fixed right-6 bottom-6 z-50 rounded-md border-3 bg-rose-400"
         >
           <HandCoins size={40} />
         </Button>
