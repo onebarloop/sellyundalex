@@ -72,11 +72,28 @@ type TotalsAndUsersPerMonth = Awaited<
   ReturnType<typeof totalsAndUsersPerMonth>
 >;
 
-export { spendingsWithSpender, totalsAndUsersPerMonth };
+const totalsByMonthAndType = async () =>
+  await db
+    .select({
+      month: sql<string>`DATE_TRUNC('month', ${spendings.spendingDate})::date`,
+      total: sum(spendings.amount).mapWith(Number),
+      type: spendings.spendingType,
+    })
+    .from(spendings)
+    .groupBy(
+      sql`DATE_TRUNC('month', ${spendings.spendingDate})`,
+      spendings.spendingType,
+    )
+    .orderBy(desc(sql`DATE_TRUNC('month', ${spendings.spendingDate})`));
+
+type TotalsByMonthAndType = Awaited<ReturnType<typeof totalsByMonthAndType>>;
+
+export { spendingsWithSpender, totalsAndUsersPerMonth, totalsByMonthAndType };
 
 export type {
   SpendingWithSpender,
   TotalsPerMonth,
   UsersPerMonth,
   TotalsAndUsersPerMonth,
+  TotalsByMonthAndType,
 };
